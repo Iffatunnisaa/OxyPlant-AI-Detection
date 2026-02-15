@@ -1,0 +1,126 @@
+<!-- Navigation -->
+<nav class="nav-bg shadow-sm py-4 px-6 sticky top-0 z-50" id="main-nav">
+  <div class="max-w-6xl mx-auto flex justify-between items-center">
+    <!-- Logo -->
+    <div class="text-xl md:text-2xl font-bold nav-text-white">
+      <a href="{{ route('home') }}" class="hover:no-underline">OxyPlant</a>
+    </div>
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex space-x-4 lg:space-x-6 items-center">
+      @if(user)
+        <a
+          href="{{ route('admin.garden_manager.index') }}"
+          class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Garden Manager</a>
+      @endif
+      <a
+        href="{{ route('plant_care.index') }}"
+        class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+      >Plant Care</a>
+      <a
+        href="{{ route('plant_info.index') }}"
+        class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+      >Plant Info</a>
+      <a
+        href="{{ route('community.index') }}"
+        class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+      >Community</a>
+      <a
+        href="{{ route('about') }}"
+        class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+      >About</a>
+      @if(user)
+        <a
+          href="{{ route('admin.profile') }}"
+          class="text-[#4E504D] hover:text-green-300 px-3 py-1 md:px-4 md:py-2 rounded-lg ml-2 md:ml-4 transition-colors duration-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
+        </a>
+      @else
+        <a
+          href="{{ route('auth.login') }}"
+          class="bg-green-600 hover:bg-green-700 text-[#F1F0E9] px-3 py-1 md:px-4 md:py-2 rounded-lg ml-2 md:ml-4 transition-colors duration-300 text-sm md:text-base"
+        >
+          Login
+            </a>
+      @endif
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-button"
+      class="md:hidden text-[#F1F0E9] focus:outline-none transition-colors duration-300"
+      onclick="toggleMobileMenu()"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu (hidden by default) -->
+  <div id="mobile-menu" class="hidden md:hidden pt-4 pb-2">
+    @if(user)
+      <a
+        href="{{ route('admin.garden_manager.index') }}"
+        class="block nav-text-white hover:text-green-300 py-2 px-4"
+      >Garden Manager</a>
+    @endif
+    <a
+      href="{{ route('plant_care.index') }}"
+      class="block nav-text-white hover:text-green-300 py-2 px-4"
+    >Plant Care</a>
+    <a
+      href="{{ route('plant_info.index') }}"
+      class="block nav-text-white hover:text-green-300 py-2 px-4"
+    >Plant Info</a>
+    <a
+      href="{{ route('community.index') }}"
+      class="block nav-text-white hover:text-green-300 py-2 px-4"
+    >Community</a>
+    <a href="{{ route('about') }}" class="block nav-text-white hover:text-green-300 py-2 px-4">About</a>
+    @if(user)
+      <a
+        href="{{ route('admin.profile') }}"
+        class="block bg-green-600 hover:bg-green-700 text-[#F1F0E9] py-2 px-4 rounded-lg mt-2 text-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          />
+        </svg>
+      </a>
+    @else
+      <a
+        href="{{ route('auth.login') }}"
+        class="block bg-green-600 hover:bg-green-700 text-[#F1F0E9] py-2 px-4 rounded-lg mt-2 text-center"
+      >
+        Login
+          </a>
+    @endif
+  </div>
+</nav>

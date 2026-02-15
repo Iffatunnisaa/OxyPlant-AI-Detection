@@ -1,0 +1,116 @@
+@layout.app({ title: "Plant Care Detail | OxyPlant" })
+  @slot('main')
+    <section class="py-12 px-6 bg-[#F2F1EB]">
+      <div class="max-w-6xl mx-auto">
+        <!-- Image and Text Row -->
+        <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-start mb-12">
+          <!-- Image on Left -->
+          <div class="w-full md:w-1/3">
+            <img
+              src="/resources/img/chives.png"
+              alt="Chives Plant"
+              class="w-full h-auto rounded-lg shadow-md object-cover"
+            />
+          </div>
+
+          <!-- Text Content on Right -->
+          <div class="w-full md:w-2/3">
+            <!-- Plant Header -->
+            <div class="mb-6">
+              <h1 class="text-3xl md:text-4xl font-bold text-[#0A5436]">
+                Peppermint
+              </h1>
+              <p class="text-xl text-[#4E504D] italic">
+                Mentha × piperita
+              </p>
+            </div>
+
+            <!-- Category Badge -->
+            <div class="mb-6">
+              <span class="bg-[#E1F5E9] text-[#0A5436] px-4 py-2 rounded-full text-sm font-medium">
+                Kategori: Herbal
+          </span>
+            </div>
+
+            <!-- Plant Description -->
+            <div class="mb-6">
+              <p class="text-[#4E504D] leading-relaxed">
+                Peppermint adalah tanaman hasil persilangan antara spearmint dan watermint yang memiliki rasa dan aroma mint yang kuat dan menyegarkan. Tanaman ini mudah tumbuh di berbagai kondisi dan sering digunakan untuk teh herbal, aromaterapi, serta berbagai keperluan kuliner dan pengobatan. Peppermint dapat menyebar dengan cepat, jadi sebaiknya ditanam di area yang dikontrol atau dalam pot. Tanaman ini juga dikenal tahan terhadap cuaca dingin.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="border-b border-[#E0E0E0] my-8">
+        </div>
+
+        <!-- Plant Care Table -->
+        <div class="mb-8 overflow-x-auto">
+          <table class="w-full table-auto">
+            <thead>
+              <tr class="bg-[#F2F1EB]">
+                <th class="px-4 py-3 text-left text-[#4E504D] font-medium">
+                  Jarak Tanam
+                </th>
+                <th class="px-4 py-3 text-left text-[#4E504D] font-medium">
+                  Kedalaman Tenam
+                </th>
+                <th class="px-4 py-3 text-left text-[#4E504D] font-medium">
+                  Sinar Matahari
+                </th>
+                <th class="px-4 py-3 text-left text-[#4E504D] font-medium">
+                  penyiraman
+                </th>
+                <th class="px-4 py-3 text-left text-[#4E504D] font-medium">
+                  Musim Tanam
+                </th>
+                <th class="px-4 py-3 text-left text-[#4E504D] font-medium">
+                  Ketahanan Terhadap Embun Beku
+                </th>
+                <th class="px-4 py-3 text-left text-[#4E504D] font-medium">
+                  Waktu Perkecambahan
+                </th>
+                <th class="px-4 py-3 text-left text-[#4E504D] font-medium">
+                  Waktu Panen
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="px-4 py-3 border-b border-[#E0E0E0] text-[#4E504D]">
+                  4/kotak
+                </td>
+                <td class="px-4 py-3 border-b border-[#E0E0E0] text-[#4E504D]">
+                  1/4 In
+                </td>
+                <td class="px-4 py-3 border-b border-[#E0E0E0] text-[#4E504D]">
+                  Sinar matahari penuh
+                </td>
+                <td class="px-4 py-3 border-b border-[#E0E0E0] text-[#4E504D]">
+                  1 kali/minggu
+                </td>
+                <td class="px-4 py-3 border-b border-[#E0E0E0] text-[#4E504D]">
+                  Tahunan
+                </td>
+                <td class="px-4 py-3 border-b border-[#E0E0E0] text-[#4E504D]">
+                  Tahan
+                </td>
+                <td class="px-4 py-3 border-b border-[#E0E0E0] text-[#4E504D]">
+                  2-3 minggu
+                </td>
+                <td class="px-4 py-3 border-b border-[#E0E0E0] text-[#4E504D]">
+                  60-80 hari
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Divider -->
+        <div class="border-b border-[#E0E0E0] my-8">
+        </div>
+      </div>
+    </section>
+  @endslot
+@end

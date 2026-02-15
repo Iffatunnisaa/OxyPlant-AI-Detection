@@ -1,0 +1,417 @@
+@layout.app({ title: "Home Page | OxyPlant" })
+  @slot('style')
+    <style>
+      /* Navigation Background */
+      
+      .nav-bg,
+      .hero-bg {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                    url('resources/img/d2.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        transition: all 0.3s ease;
+      }
+      
+      /* Scrolled State */
+      
+      .nav-bg.scrolled {
+        background: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(5px);
+      }
+      
+      .nav-bg.scrolled .nav-text-white,
+      .nav-bg.scrolled #mobile-menu-button {
+        color: #333 !important;
+      }
+      
+      .nav-bg.scrolled a:hover {
+        color: #4CAF50 !important;
+      }
+      
+      /* Hover State (untuk semua state) */
+      
+      a:hover {
+        color: #4CAF50 !important;
+        transition: color 0.3s ease;
+      }
+      
+      /* Warna tombol Get Started saat di-scroll */
+      
+      .nav-bg.scrolled .bg-green-600 {
+        background-color: #4CAF50 !important;
+      }
+      
+      .nav-bg.scrolled .bg-green-600:hover {
+        background-color: #3e8e41 !important;
+      }
+      
+      .nav-text-white {
+        color: #F1F0E9;
+        transition: color 0.3s ease;
+      }
+      
+      .hero-bg {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+      }
+      
+      /* Responsive adjustments */
+      
+      @media (max-width: 768px) {
+        .hero-content {
+          margin-left: 0 !important;
+          padding-top: 2rem;
+          text-align: center;
+        }
+      
+        .save-our-planet-banner {
+          position: relative !important;
+          left: auto !important;
+          top: auto !important;
+          transform: none !important;
+          margin: 0 auto 2rem;
+        }
+      
+        .banner-image {
+          height: 300px !important;
+          max-width: 250px !important;
+        }
+      
+        .plant-info-cards {
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+      
+        .plant-info-cards > div {
+          width: 80%;
+          max-width: 300px;
+        }
+      }
+      
+      .hero-bg {
+        min-height: 90vh;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      @media (max-width: 640px) {
+        .save-our-planet-banner {
+          position: relative;
+          left: auto !important;
+          bottom: auto !important;
+          transform: none !important;
+          margin: 2rem auto;
+          width: 180px !important;
+        }
+      
+        .hero-content {
+          width: 100% !important;
+          margin-left: 0 !important;
+          text-align: center;
+          padding-top: 0 !important;
+        }
+      }
+      
+      .bg-PInform {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                      url('/resources/img/bg_PI.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      
+      @media (max-width: 768px) {
+        .plant-info-cards {
+          gap: 4rem;
+          padding: 0 1rem;
+        }
+      }
+    </style>
+  @endslot
+  
+  @slot('main')
+    <!-- Hero Section -->
+    <div class="hero-bg relative" id="home">
+      <div class="container mx-auto px-4 lg:px-6 text-[#F1F0E9] h-full flex items-center">
+        <!-- Banner Image -->
+        <div
+          class="save-our-planet-banner absolute left-[25%] xl:left-[29%] bottom-[-11%] -translate-y-[15%] z-10 w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] transition-all duration-300"
+        >
+          <img
+            src="resources/img/banner.png"
+            alt="Save Our Planet"
+            class="w-full h-auto object-contain filter drop-shadow-lg"
+          />
+        </div>
+
+        <!-- Text Content -->
+        <div
+          class="hero-content relative z-20 ml-auto w-full md:w-[55%] lg:w-[45%] pt-12 pl-4 md:pl-0 transition-all duration-300"
+        >
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+            Jadikan Rumah Lebih<br />Hijau dengan OxyPlant!
+          </h1>
+
+          <p class="text-sm sm:text-base lg:text-lg mb-6 leading-relaxed">
+            Kelola koleksi tanamamu, pelajari perawatannya,<br class="hidden sm:block" />
+            dan bergabung dengan komunitas pecinta tanaman hanya dalam satu aplikasi
+          </p>
+
+          <a
+            href="#get-started"
+            class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 sm:py-3 sm:px-8 rounded-lg text-base sm:text-lg transition duration-300"
+            onclick="handleTryNow(event)"
+          >
+            Coba OxyPlant Sekarang
+      </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="py-12 md:py-16" style="background-color:#AFC8AD" id="garden-manager">
+      <div class="container mx-auto px-4 md:px-6">
+        <div class="text-center mb-12 md:mb-16">
+          <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0A5436]">
+            Rencanakan, Rawat, dan Nikmati <br />Keindahan Tanaman dengan Mudah
+          </h2>
+          <p class="text-base md:text-lg text-[#4E504D] max-w-3xl mx-auto mt-4">
+            Kami di OxyPlant percaya bahwa setiap pecinta tanaman membutuhkan alat dan sumber daya terbaik untuk mewujudkan taman impian mereka.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 mb-12 md:mb-16">
+          <!-- Feature 1 -->
+          <div
+            class="text-center p-4 md:p-6 rounded-lg hover:shadow-lg transition-shadow duration-300"
+            style="background-color: #F2F1EB"
+          >
+            <div class="mx-auto mb-4 flex justify-center h-32 md:h-40">
+              <img src="/resources/img/home1.png" class="h-full w-auto object-contain" alt="Tanpa Instalasi" />
+            </div>
+            <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-2">
+              Tanpa Instalasi, Langsung Pakai
+            </h3>
+            <p class="text-sm md:text-base text-gray-600">
+              Gunakan platform berbasis web tanpa perlu instalasi atau pengaturan rumit.
+            </p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div
+            class="text-center p-4 md:p-6 rounded-lg hover:shadow-lg transition-shadow duration-300"
+            style="background-color: #F2F1EB"
+          >
+            <div class="mx-auto mb-4 flex justify-center h-32 md:h-40">
+              <img src="/resources/img/home2.png" class="h-full w-auto object-contain" alt="Kalender Perawatan" />
+            </div>
+            <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-2">
+              Kalender Perawatan Otomatis
+            </h3>
+            <p class="text-sm md:text-base text-gray-600">
+              Dapatkan jadwal penyiraman dan pemupukan sesuai kebutuhan tanaman Anda.
+            </p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div
+            class="text-center p-4 md:p-6 rounded-lg hover:shadow-lg transition-shadow duration-300"
+            style="background-color: #F2F1EB"
+          >
+            <div class="mx-auto mb-4 flex justify-center h-32 md:h-40">
+              <img src="/resources/img/home3.png" class="h-full w-auto object-contain" alt="Panduan Perawatan" />
+            </div>
+            <h3 class="text-lg md:text-xl font-semibold text-gray-800 mb-2">
+              Panduan & Tips Perawatan
+            </h3>
+            <p class="text-sm md:text-base text-gray-600">
+              Dapatkan rekomendasi terbaik untuk merawat tanaman agar tetap sehat dan tumbuh optimal.
+            </p>
+          </div>
+        </div>
+
+        <!-- CTA Section with Image -->
+        <div class="rounded-2xl overflow-hidden max-w-6xl mx-4 md:mx-auto">
+          <div class="flex flex-col md:flex-row">
+            <!-- Image Section (Left) -->
+            <div class="w-full md:w-2/5 flex items-center justify-center p-6">
+              <img
+                src="/resources/img/home4.png"
+                alt="Garden Planner"
+                class="w-full h-auto max-h-95 object-contain"
+              />
+            </div>
+
+            <!-- Content Section (Right) -->
+            <div class="w-full md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
+              <div class="space-y-4">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#0A5436]">
+                  Siap Merencanakan Kebun Anda?
+              Coba Garden Planner Kami<br />Sekarang – Gratis!
+                </h2>
+                <div class="pt-4">
+                  <a
+                    href="{{ route('auth.login') }}"
+                    class="inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105"
+                  >
+                    Gunakan Secara Gratis
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path
+                        fill-rule="evenodd"
+                        d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Plant Information Section -->
+    <div
+      class="bg-PInform bg-cover bg-center text-[#F1F0E9] text-center py-12 md:py-20 px-4 md:px-8"
+      id="plant-info"
+    >
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8 md:mb-12">
+          Plant Info
+        </h2>
+        <div class="plant-info-cards flex flex-col md:flex-row justify-center items-stretch gap-6 md:gap-8">
+          <!-- Card 1 -->
+          <div
+            class="bg-[#F2F1EB] backdrop-blur-sm text-gray-800 p-6 rounded-xl shadow-xl w-full max-w-xs transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
+            onclick="handlePlantCategory('Tanaman Langka')"
+          >
+            <img
+              src="resources/img/tanaman_langka.png"
+              alt="Tanaman Langka"
+              class="w-28 h-28 md:w-36 md:h-36 mx-auto object-contain"
+            />
+            <h3 class="text-lg md:text-xl font-semibold mt-4 md:mt-6">
+              Tanaman Langka
+            </h3>
+            <p class="text-sm md:text-base mt-2 text-gray-600">
+              Temukan koleksi tanaman langka
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div
+            class="bg-[#F2F1EB] backdrop-blur-sm text-gray-800 p-6 rounded-xl shadow-xl w-full max-w-xs transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
+            onclick="handlePlantCategory('Bunga')"
+          >
+            <img
+              src="resources/img/bunga.png"
+              alt="Bunga"
+              class="w-28 h-28 md:w-36 md:h-36 mx-auto object-contain"
+            />
+            <h3 class="text-lg md:text-xl font-semibold mt-4 md:mt-6">
+              Bunga
+            </h3>
+            <p class="text-sm md:text-base mt-2 text-gray-600">
+              Ragam jenis bunga indah
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div
+            class="bg-[#F2F1EB] backdrop-blur-sm text-gray-800 p-6 rounded-xl shadow-xl w-full max-w-xs transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
+            onclick="handlePlantCategory('Buah')"
+          >
+            <img src="resources/img/buah.png" alt="Buah" class="w-28 h-28 md:w-36 md:h-36 mx-auto object-contain" />
+            <h3 class="text-lg md:text-xl font-semibold mt-4 md:mt-6">
+              Buah
+            </h3>
+            <p class="text-sm md:text-base mt-2 text-gray-600">
+              Tanaman buah produktif
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plant Care Section -->
+    <div class="bg-[#F1F0E9] py-12 md:py-16 px-6 md:px-8" id="plant-care">
+      <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-12">
+        <!-- Text Content -->
+        <div class="md:w-2/3">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4 text-[#0A5436]">
+            Perawatan yang Tepat untuk Tanaman
+          </h2>
+          <p class="text-lg mb-6 text-[#4E504D]">
+            Merawat tanaman adalah aktivitas menyenangkan yang dapat menjadi hobi yang bermanfaat. 
+        <span class="inline-block ml-2 text-green-600">✓</span>
+          </p>
+          <a
+            href="{{ route('auth.register') }}"
+            class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 sm:py-3 sm:px-8 rounded-lg text-base sm:text-lg transition duration-300"
+          >
+            Coba OxyPlant Sekarang
+      </a>
+        </div>
+
+        <!-- Image Placeholder -->
+        <div class="">
+          <img
+            src="/resources/img/home5.png"
+            alt="Plant Care Illustration"
+            class="w-full h-auto object-cover rounded"
+          />
+        </div>
+      </div>
+    </div>
+  @endslot
+  
+  @slot('script')
+    <script>
+      // Scroll effect for navbar
+      window.addEventListener("scroll", function() {
+        const nav = document.getElementById("main-nav");
+        if (window.scrollY > 50) {
+          nav.classList.add("scrolled");
+        } else {
+          nav.classList.remove("scrolled");
+        }
+      });
+      // Mobile menu toggle function
+      
+      function toggleMobileMenu() {
+        const menu = document.getElementById("mobile-menu");
+        menu.classList.toggle("hidden");
+      }
+      // Smooth scrolling for anchor links
+      
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href");
+          if (targetId === "#") return;
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: "smooth"
+            });
+            // Close mobile menu if open
+            const mobileMenu = document.getElementById("mobile-menu");
+            if (!mobileMenu.classList.contains("hidden")) {
+              mobileMenu.classList.add("hidden");
+            }
+          }
+        });
+      });
+      // Function to handle plant category clicks
+      
+      function handlePlantCategory(category) {
+        alert(`Anda memilih kategori: ${category}\nAnda akan diarahkan ke daftar tanaman dalam kategori ini.`);
+        // In a real app, you would filter/show plants by category
+      }
+    </script>
+  @endslot
+@end

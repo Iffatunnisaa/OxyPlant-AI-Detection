@@ -1,0 +1,136 @@
+@layout.app({ title: "About | OxyPlant" })
+  @slot('style')
+    <style>
+      .bg-about {
+        background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                        url('/resources/img/bg_about.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    </style>
+  @endslot
+  @slot('main')
+    <!-- Header Section with Image in Bottom Right -->
+    <header class="bg-[#F2F1EB] py-12 relative min-h-[450px] overflow-hidden">
+      <!-- Text Content -->
+      <div class="max-w-6xl mx-auto h-full flex flex-col justify-center pt-20 pb-28">
+        <h1 class="text-4xl font-bold text-[#0A5436]">
+          Apa itu OxyPlant
+        </h1>
+        <p class="mt-4 text-gray-600 max-w-lg">
+          Saran berkebun cerdas untuk para pekebun yang cerdas!
+        </p>
+      </div>
+
+      <!-- Image positioned at bottom right -->
+      <div class="absolute bottom-2 right-72 w-[380px] md:w-[680px]">
+        <img src="/resources/img/abt.png" alt="Plant Illustration" class="w-full h-auto object-contain" />
+      </div>
+    </header>
+
+    <!-- Card About -->
+    <div class="bg-about bg-cover bg-center text-white py-12 md:py-20 px-4 md:px-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Card dengan transparansi -->
+        <div class="bg-[#AFC8AD]/30 backdrop-blur-md rounded-xl shadow-xl p-8 md:p-12 border border-white/20">
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 text-center">
+            OxyPlant
+          </h2>
+          <p class="text-lg md:text-lg leading-relaxed text-center">
+            OxyPlant adalah platform digital yang membantu pecinta tanaman dalam merawat dan mengelola tanaman dengan lebih mudah. Pengguna dapat menemukan informasi lengkap tentang berbagai jenis tanaman, termasuk kebutuhan tumbuh dan tips perawatan. Selain itu, OxyPlant dilengkapi fitur manajemen taman serta komunitas untuk berbagi pengalaman berkebun. Dengan OxyPlant, merawat tanaman menjadi lebih praktis dan menyenangkan!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- About konten -->
+    <!-- Garden Manager Section -->
+    <section class="bg-[#F2F1EB] py-16 px-4 md:px-8">
+      <div class="max-w-6xl mx-auto space-y-16">
+        <!-- First Content - Image Left, Text Right -->
+        <div class="flex flex-col md:flex-row gap-8 items-center">
+          <!-- Image on Left -->
+          <div class="md:w-1/2">
+            <img
+              src="/resources/img/gm_about.png"
+              alt="Garden Manager"
+              class="rounded-xl shadow-lg w-full h-auto"
+            />
+          </div>
+
+          <!-- Text on Right -->
+          <div class="md:w-1/2">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#0A5436] mb-6">
+              Garden Manager
+            </h2>
+            <div class="space-y-4 text-gray-700 text-lg">
+              <p>
+                Halaman ini menyediakan alat untuk mencatat dan mengelola tanaman dengan lebih mudah. Jadwal penyiraman, pemupukan, dan pencahayaan bisa diatur agar tanaman mendapatkan perawatan yang optimal.
+              </p>
+              <p>
+                Notifikasi pengingat membantu memastikan setiap tanaman dirawat tepat waktu. Dengan tampilan yang sederhana dan fungsional, merawat tanaman menjadi lebih praktis dan efisien.
+              </p>
+              <p>
+                Setiap perubahan kondisi tanaman juga dapat dicatat, sehingga pengguna bisa melihat perkembangan dan menyesuaikan perawatan yang dibutuhkan.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Second Content - Image Right, Text Left -->
+        <div class="flex flex-col md:flex-row gap-8 items-center">
+          <!-- Text on Left (order changes on mobile) -->
+          <div class="md:w-1/2 md:order-1 order-2">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#0A5436] mb-6">
+              Plant Care
+            </h2>
+            <div class="space-y-4 text-gray-700 text-lg">
+              <p>
+                Bagian ini berisi panduan lengkap untuk merawat berbagai jenis tanaman dengan cara yang benar. Informasi tentang kebutuhan air, sinar matahari, pupuk, serta cara menangani hama dan penyakit tersedia dalam format yang mudah dipahami.
+              </p>
+              <p>
+                Setiap tanaman memiliki kebutuhan spesifik, dan halaman ini membantu menemukan metode perawatan yang sesuai. Dengan referensi yang akurat, tanaman bisa tumbuh lebih sehat dan subur.
+              </p>
+            </div>
+          </div>
+
+          <!-- Image on Right -->
+          <div class="md:w-1/2 md:order-2 order-1">
+            <img src="/resources/img/pc_about.png" alt="Plant Care" class="rounded-xl shadow-lg w-full h-auto" />
+          </div>
+        </div>
+
+        <!-- First Content - Image Left, Text Right -->
+        <div class="flex flex-col md:flex-row gap-8 items-center">
+          <!-- Image on Left -->
+          <div class="md:w-1/2">
+            <img
+              src="/resources/img/pi_about.png"
+              alt="Plant Information"
+              class="rounded-xl shadow-lg w-full h-auto"
+            />
+          </div>
+
+          <!-- Text on Right -->
+          <div class="md:w-1/2">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#0A5436] mb-6">
+              Plant Information
+            </h2>
+            <div class="space-y-4 text-gray-700 text-lg">
+              <p>
+                Halaman ini memuat informasi mendetail tentang berbagai jenis tanaman, mulai dari deskripsi, habitat alami, hingga cara perawatannya. Pencarian bisa dilakukan berdasarkan kategori atau kebutuhan spesifik tanaman.
+              </p>
+              <p>
+                Dengan akses cepat ke informasi yang dibutuhkan, memilih dan merawat tanaman menjadi lebih sederhana. Tidak perlu lagi menebak-nebak cara terbaik untuk menjaga tanaman tetap sehat. Informasi ini terus diperbarui dengan data terbaru,
+              </p>
+              <p>
+                memastikan setiap pengguna mendapatkan panduan yang paling relevan. Dengan berbagai tips dan fakta menarik tentang tanaman, halaman ini juga cocok bagi mereka yang ingin memperluas wawasan di dunia botani.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  @endslot
+@end

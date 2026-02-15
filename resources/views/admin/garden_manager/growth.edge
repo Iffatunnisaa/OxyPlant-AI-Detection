@@ -1,0 +1,70 @@
+@layout.app({ title: "Manage Growth | OxyPlant" })
+  @slot('main')
+    <!-- resources/views/growth.edge -->
+    <section class="py-12 px-6 bg-[#F2F1EB] min-h-screen">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-bold text-[#0A5436] mb-6">
+          Detail Pertumbuhan Tanaman
+        </h2>
+
+        <p class="text-gray-600 mb-6">
+          Pantau pertumbuhan tanaman Anda dari waktu ke waktu dengan mencatat tinggi, jumlah daun, dan kondisi batang.
+        </p>
+
+        <!-- Grafik Dummy -->
+        <div class="bg-white rounded-xl p-6 shadow mb-8">
+          <h3 class="text-xl font-semibold text-[#3FAB5E] mb-4">
+            Grafik Pertumbuhan
+          </h3>
+          <div class="bg-gray-100 rounded-lg h-40 flex items-center justify-center text-gray-400">
+            [Grafik Placeholder]
+          </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="bg-white rounded-xl p-6 shadow mb-8">
+          <h3 class="text-xl font-semibold text-[#3FAB5E] mb-4">
+            Checklist Pertumbuhan
+          </h3>
+          <ul class="list-disc pl-5 text-[#4E504D] space-y-2">
+            <li>
+              🌱 Benih tumbuh
+            </li>
+            <li>
+              🌿 Daun mulai bertambah
+            </li>
+            <li>
+              🌾 Batang menguat
+            </li>
+          </ul>
+        </div>
+
+        <!-- Tips -->
+        <div class="bg-white rounded-xl p-6 shadow mb-8">
+          <h3 class="text-xl font-semibold text-[#3FAB5E] mb-4">
+            Tips Pemantauan
+          </h3>
+          <ul class="list-disc pl-5 text-[#4E504D] space-y-2">
+            <li>
+              Pantau pertumbuhan setiap 3–5 hari
+            </li>
+            <li>
+              Gunakan pupuk organik sesuai fase
+            </li>
+          </ul>
+        </div>
+
+        <!-- Upload -->
+        <div class="mb-6">
+          <label class="block mb-2 font-medium text-[#4E504D]">Upload Foto Pertumbuhan:</label>
+          <input type="file" class="border rounded px-4 py-2 w-full bg-white" />
+        </div>
+
+        <a
+          href="{{ route('admin.garden_manager.index') }}"
+          class="inline-block bg-[#3FAB5E] hover:bg-[#368F4F] text-white py-2 px-4 rounded-xl transition"
+        >Kembali ke Status Tanaman</a>
+      </div>
+    </section>
+  @endslot
+@end

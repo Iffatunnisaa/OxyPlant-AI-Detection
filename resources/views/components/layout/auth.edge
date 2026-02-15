@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {{ title || "OxyPlant" }}
+    </title>
+    @if ($slots.meta)
+      {{{ await $slots.meta() }}}
+    @endif
+    <script src="https://cdn.tailwindcss.com">
+      
+    </script>
+
+    @if ($slots.style)
+      {{{ await $slots.style() }}}
+    @endif
+  </head>
+  <body class="min-h-screen overflow-x-hidden">
+    {{{ await $slots.body() }}}
+    @if ($slots.script)
+      {{{ await $slots.script() }}}
+    @endif
+  </body>
+</html>

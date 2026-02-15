@@ -1,0 +1,115 @@
+@layout.app({ title: "Manage Pest | OxyPlant" })
+  @slot('main')
+    <section class="py-12 px-6 bg-[#F2F1EB] min-h-screen">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-[#0A5436] mb-2">
+          Detail Hama dan Penyakit
+        </h2>
+        <p class="text-gray-600 mb-8">
+          Identifikasi gejala kerusakan tanaman akibat hama dan penyakit. Pelajari solusinya.
+        </p>
+
+        <!-- Penjelasan Umum -->
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+          <!-- Hama -->
+          <div class="bg-white rounded-xl p-6 shadow">
+            <h3 class="text-xl font-semibold text-[#EF5350] mb-4">
+              Jenis Hama Umum
+            </h3>
+            <ul class="list-disc pl-5 text-[#4E504D] space-y-2">
+              <li>
+                🐛 Ulat daun (daun berlubang)
+              </li>
+              <li>
+                🐞 Kutu daun (daun menggulung/menguning)
+              </li>
+            </ul>
+          </div>
+
+          <!-- Penyakit -->
+          <div class="bg-white rounded-xl p-6 shadow">
+            <h3 class="text-xl font-semibold text-[#EF5350] mb-4">
+              Jenis Penyakit Tanaman
+            </h3>
+            <ul class="list-disc pl-5 text-[#4E504D] space-y-2">
+              <li>
+                🍃 Jamur (bercak pada daun)
+              </li>
+              <li>
+                🌿 Bakteri (daun busuk atau layu)
+              </li>
+            </ul>
+          </div>
+
+          <!-- Solusi -->
+          <div class="bg-white rounded-xl p-6 shadow">
+            <h3 class="text-xl font-semibold text-[#EF5350] mb-4">
+              Solusi Penanganan
+            </h3>
+            <ul class="list-disc pl-5 text-[#4E504D] space-y-2">
+              <li>
+                Gunakan pestisida organik sesuai dosis
+              </li>
+              <li>
+                Lakukan rotasi tanaman dan sanitasi rutin
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Contoh Tanaman Terkena Hama -->
+        <h3 class="text-2xl font-bold text-[#0A5436] mb-4">
+          Contoh Tanaman yang Terkena Hama
+        </h3>
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+          <!-- Card 1 -->
+          <div class="bg-white rounded-xl p-5 shadow hover:shadow-lg transition">
+            <h4 class="text-lg font-semibold text-[#0A5436] mb-2">
+              Bayam
+            </h4>
+            <p class="text-sm text-[#4E504D] mb-2">
+              🐛 Diserang ulat daun, menyebabkan daun berlubang besar-besar.
+            </p>
+            <p class="text-sm text-[#4E504D]">
+              Solusi: Gunakan pestisida nabati dari daun mimba.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-white rounded-xl p-5 shadow hover:shadow-lg transition">
+            <h4 class="text-lg font-semibold text-[#0A5436] mb-2">
+              Tomat
+            </h4>
+            <p class="text-sm text-[#4E504D] mb-2">
+              🍃 Terinfeksi jamur, terdapat bercak cokelat pada daun.
+            </p>
+            <p class="text-sm text-[#4E504D]">
+              Solusi: Semprot fungisida organik dan hindari kelembaban tinggi.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-white rounded-xl p-5 shadow hover:shadow-lg transition">
+            <h4 class="text-lg font-semibold text-[#0A5436] mb-2">
+              Cabai
+            </h4>
+            <p class="text-sm text-[#4E504D] mb-2">
+              🐞 Terserang kutu daun, menyebabkan daun menggulung dan pucat.
+            </p>
+            <p class="text-sm text-[#4E504D]">
+              Solusi: Gunakan air bawang putih sebagai pestisida alami.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <a
+            href="{{ route('admin.garden_manager.index') }}"
+            class="inline-block bg-[#EF5350] hover:bg-[#C62828] text-white py-2 px-4 rounded-xl transition"
+          >
+            Kembali ke Status Tanaman
+        </a>
+        </div>
+      </section>
+    @endslot
+  @end

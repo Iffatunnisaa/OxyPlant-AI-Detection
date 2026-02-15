@@ -1,0 +1,338 @@
+@layout.app({ title: "Garden Manager | OxyPlant" })
+  @slot('main')
+    <!-- Hero Section -->
+    <section class="bg-[#F2F1EB] py-16 md:py-24 px-6">
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-12">
+        <!-- Text Content (Left) -->
+        <div class="md:w-1/2 text-left">
+          <h1 class="text-4xl md:text-4xl lg:text-5xl font-bold text-[#0A5436] mb-4">
+            Garden Manager
+          </h1>
+          <p class="mt-4 text-gray-600 max-w-lg leading-relaxed">
+            Berkebun Jadi Lebih Seru dan Teratur<br />
+            Garden Manager membantumu merawat<br />
+            tanaman dengan jadwal otomatis, tips perawatan,<br />
+            dan catatan pertumbuhan yang praktis.
+          </p>
+        </div>
+
+        <!-- Image Placeholder (Right) -->
+        <div class="md:w-1/2 flex justify-center">
+          <div class="rounded-lg w-full h-64 md:h-80 flex items-center justify-center text-gray-400">
+            <img src="/resources/img/gm.png" alt="Plant Gm" class="w-full h-auto object-contain" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- My Garden Section -->
+    <section class="py-12 px-6 bg-[#C7D9C6]">
+      <div class="max-w-6xl mx-auto">
+        <!-- Section Header -->
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-2xl md:text-3xl font-bold text-[#0A5436]">
+            Kebun Saya
+          </h2>
+          <a
+            href="{{ route('admin.garden_manager.add') }}"
+            class="bg-[#3FAB5E] hover:bg-[#368F4F] text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300 flex items-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Tambah Tanaman
+        </a>
+        </div>
+
+        <!-- Plant Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          @each(plant in plants)
+            @!component('components/garden/plant_card', { plant: plant })
+          @else
+            <div class="col-span-1 md:col-span-2 lg:col-span-3 bg-white rounded-lg shadow-md p-6 text-center">
+              <p class="text-gray-500">Kebun Anda masih kosong. Tambahkan tanaman baru untuk memulai!</p>
+            </div>
+          @endeach
+        </div>
+      </div>
+    </section>
+
+    <!-- Plant Status Section -->
+    {{-- <section class="py-12 px-6 bg-[#C7D9C6]">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-2xl md:text-3xl font-bold text-[#4E504D] mb-8">
+          Status Tanaman
+        </h2>
+
+        <!-- Status Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Growth Status Card -->
+          <div
+            class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+          >
+            <div class="p-6">
+              <div class="flex items-center mb-4">
+                <div class="p-3 rounded-full bg-[#E1F5E9] mr-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6 text-[#3FAB5E]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-[#4E504D]">
+                  Pertumbuhan
+                </h3>
+              </div>
+              <p class="text-[#4E504D] mb-4">
+                Pantau perkembangan tanaman Anda secara berkala
+              </p>
+              <a
+                href="{{ route('admin.garden_manager.growth') }}"
+                class="text-[#3FAB5E] font-medium flex items-center hover:text-[#368F4F] transition-colors"
+              >
+                Lihat detail
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 ml-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Harvest Status Card -->
+          <div
+            class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+          >
+            <div class="p-6">
+              <div class="flex items-center mb-4">
+                <div class="p-3 rounded-full bg-[#FFF3E0] mr-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6 text-[#FFA726]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-[#4E504D]">
+                  Panen
+                </h3>
+              </div>
+              <p class="text-[#4E504D] mb-4">
+                Jadwal dan tips panen untuk hasil optimal
+              </p>
+              <a
+                href="{{ route('admin.garden_manager.harvest') }}"
+                class="text-[#3FAB5E] font-medium flex items-center hover:text-[#368F4F] transition-colors"
+              >
+                Lihat detail
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 ml-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Pest/Disease Status Card -->
+          <div
+            class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+          >
+            <div class="p-6">
+              <div class="flex items-center mb-4">
+                <div class="p-3 rounded-full bg-[#FFEBEE] mr-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6 text-[#EF5350]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-[#4E504D]">
+                  Hama/Penyakit
+                </h3>
+              </div>
+              <p class="text-[#4E504D] mb-4">
+                Identifikasi dan atasi masalah tanaman Anda
+              </p>
+              <a
+                href="{{ route('admin.garden_manager.pest') }}"
+                class="text-[#3FAB5E] font-medium flex items-center hover:text-[#368F4F] transition-colors"
+              >
+                Lihat detail
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 ml-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> --}}
+
+    {{-- Modal to confirm water/pesticide/harvest a plant --}}
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black/60 z-40 hidden"></div>
+    <!-- Modal -->
+    <div id="confirmModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+      <form method="POST" action="{{ route('admin.garden_manager.community') }}" class="bg-white rounded-2xl shadow-2xl p-8 max-w-xl w-full relative">
+      {{ csrfField() }}
+      <input type="hidden" name="plant_id" id="modalPlantId" />
+      <input type="hidden" name="status" id="modalStatus" />
+      <!-- Big Action Icon -->
+      <div id="modalActionIcon" class="flex justify-center mb-6">
+        <!-- Default: Water Icon, will be replaced dynamically -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-[#3FAB5E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2m0 0C7.03 7.39 4 11.28 4 15a8 8 0 0016 0c0-3.72-3.03-7.61-8-10zm0 0v2m0 0v2" />
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold mb-4 text-center">Konfirmasi Tindakan</h2>
+      <p class="mb-6 text-center">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+      <div class="mb-4">
+        <label class="flex items-center space-x-2">
+        <input type="checkbox" name="is_public" class="form-checkbox text-[#3FAB5E]" checked />
+        <span>Bagikan ke komunitas</span>
+        </label>
+      </div>
+      <div class="mb-6">
+        <textarea id="modalMessage" name="message" rows="3" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3FAB5E]" placeholder="Tulis pesan (opsional)"></textarea>
+      </div>
+      <div class="flex justify-end space-x-2">
+        <button type="button" id="cancelButton" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded">
+        Batal
+        </button>
+        <button type="submit" id="confirmButton" class="bg-[#3FAB5E] hover:bg-[#368F4F] text-white font-semibold py-2 px-6 rounded">
+        Konfirmasi
+        </button>
+      </div>
+      </form>
+    </div>
+    <script>
+      // Modal logic with overlay and dynamic icon
+      document.addEventListener('DOMContentLoaded', function () {
+      const confirmModal = document.getElementById('confirmModal');
+      const modalOverlay = document.getElementById('modalOverlay');
+      const cancelButton = document.getElementById('cancelButton');
+      const confirmButton = document.getElementById('confirmButton');
+      const modalActionIcon = document.getElementById('modalActionIcon');
+      const modalPlantId = document.getElementById('modalPlantId');
+      const modalMessage = document.getElementById('modalMessage');
+      const modalStatus = document.getElementById('modalStatus');
+
+      // Show modal with specific action: 'water', 'pesticide', 'harvest'
+      window.showConfirmModal = function(action = 'water', plantId, plantName) {
+        // Set icon based on action
+        let iconHtml = '';
+        let actionMessage = '';
+        let status = '';
+
+        if (action === 'water') {
+          iconHtml = `<i class="fas fa-tint text-5xl text-[#3FAB5E]"></i>`;
+          actionMessage = `Menyiram ${plantName}`;
+          status = 'tumbuh';
+        } else if (action === 'pesticide') {
+          iconHtml = `<i class="fas fa-spray-can text-5xl text-[#FFA726]"></i>`;
+          actionMessage = `Memberikan pestisida pada ${plantName}`;
+          status = 'terkena hama';
+        } else if (action === 'harvest') {
+          iconHtml = `<i class="fas fa-cut text-5xl text-[#FF7043]"></i>`;
+          actionMessage = `Memanen ${plantName}`;
+          status = 'siap panen';
+        }
+        modalActionIcon.innerHTML = iconHtml;
+        modalPlantId.value = plantId;
+        modalMessage.value = actionMessage;
+        modalStatus.value = status;
+
+        confirmModal.classList.remove('hidden');
+        modalOverlay.classList.remove('hidden');
+      };
+
+      function hideModal() {
+        confirmModal.classList.add('hidden');
+        modalOverlay.classList.add('hidden');
+      }
+
+      cancelButton.addEventListener('click', hideModal);
+
+      // Optional: Hide modal on overlay click
+      modalOverlay.addEventListener('click', hideModal);
+
+      // Example usage: window.showConfirmModal('water');
+      // Call window.showConfirmModal('pesticide') or 'harvest' as needed
+      });
+    </script>
+    
+
+    <!-- Hero Section with Background Image -->
+    <section class="relative h-[400px] md:h-[500px] flex items-center overflow-hidden">
+      <!-- Background Image -->
+      <div class="absolute inset-0 z-0">
+        <img src="/resources/img/gm_bg.png" alt="Garden Background" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-black/30">
+        </div>
+        <!-- Overlay for better text readability -->
+      </div>
+
+      <!-- Content -->
+      <div class="relative z-10 max-w-6xl mx-auto px-6 w-full">
+        <div class="max-w-xl">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+            Kelola Kebun Pribadimu dengan Mudah
+          </h1>
+          <p class="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
+            Lacak tanaman dan pantau perkembangan<br />
+            kebunmu secara efisien!
+          </p>
+        </div>
+      </div>
+    </section>
+  @endslot
+  @slot('script')
+    
+  @endslot
+@end
