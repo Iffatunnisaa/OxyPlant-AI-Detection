@@ -67,6 +67,7 @@ Ubah konfigurasi berikut:
 APP_KEY=hasil_dari_generate:key
 JWT_SECRET=secret_key_kamu
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/adonis_mongo_auth
+FASTAPI_AI_URL=http://localhost:8000
 ```
 
 ✅ **Pastikan:**
@@ -107,6 +108,32 @@ http://localhost:3333
 - 🌱 Manajemen tanaman
 - 👥 Komunitas antar pengguna
 - 💾 Disimpan di MongoDB menggunakan Mongoose
+- 🧠 Deteksi penyakit tanaman lewat service FastAPI terpisah
+
+## ML Service
+
+Folder `ml-service/` berisi backend Python terpisah untuk prediksi penyakit tanaman. Service ini tetap berada di dalam repository yang sama, tetapi dijalankan sebagai proses sendiri agar model AI tidak bercampur dengan aplikasi utama AdonisJS.
+
+### Endpoint utama
+
+- `GET /health` untuk cek status service
+- `POST /predict-image/` untuk upload gambar dan mendapatkan hasil prediksi
+
+### Cara menjalankan
+
+1. Masuk ke folder `ml-service`
+2. Buat virtual environment Python
+3. Install dependency dari `requirements.txt`
+4. Salin `.env.example` menjadi `.env` dan sesuaikan `MODEL_PATH`
+5. Jalankan `uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000`
+
+### Kontrak response
+
+Endpoint `POST /predict-image/` mengembalikan data dengan field seperti `plant`, `disease`, `confidence`, `valid`, dan `top_3_predictions`.
+
+Integrasi backend Adonis ke ML service tersedia pada route internal:
+
+- `POST /admin/garden_manager/detect`
 
 ## Tech Stack
 
@@ -115,6 +142,7 @@ http://localhost:3333
 - 🔐 JWT (JSON Web Token)
 - 🧠 TypeScript
 - 🧩 Edge Templating Engine
+- 🐍 FastAPI untuk ML service
 
 ## License
 

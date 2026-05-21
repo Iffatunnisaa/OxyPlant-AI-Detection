@@ -8,31 +8,36 @@
 
     <!-- Desktop Menu -->
     <div class="hidden md:flex space-x-4 lg:space-x-6 items-center">
-      @if(user)
+      @if(isAdmin)
         <a
-          href="{{ route('admin.garden_manager.index') }}"
+          href="{{ route('admin.dashboard') }}"
+          class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Admin Dashboard</a>
+        <a
+          href="{{ route('admin.plant_info.index') }}"
+          class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Kelola Info Tanaman</a>
+      @elseif(isAuthenticated)
+        <a
+          href="{{ route('garden_manager.index') }}"
           class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
         >Garden Manager</a>
+        <a
+          href="{{ route('plant_info.index') }}"
+          class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Info Tanaman</a>
       @endif
-      <a
-        href="{{ route('plant_care.index') }}"
-        class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-      >Plant Care</a>
-      <a
-        href="{{ route('plant_info.index') }}"
-        class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-      >Plant Info</a>
       <a
         href="{{ route('community.index') }}"
         class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-      >Community</a>
+      >Komunitas</a>
       <a
         href="{{ route('about') }}"
         class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-      >About</a>
-      @if(user)
+      >Tentang</a>
+      @if(isAuthenticated)
         <a
-          href="{{ route('admin.profile') }}"
+          href="{{ route('profile') }}"
           class="text-[#4E504D] hover:text-green-300 px-3 py-1 md:px-4 md:py-2 rounded-lg ml-2 md:ml-4 transition-colors duration-300"
         >
           <svg
@@ -63,8 +68,8 @@
     <!-- Mobile Menu Button -->
     <button
       id="mobile-menu-button"
-      class="md:hidden text-[#F1F0E9] focus:outline-none transition-colors duration-300 onclick="
-      toggleMobileMenu
+      class="md:hidden text-[#0A5436] focus:outline-none transition-colors duration-300"
+      onclick="toggleMobileMenu()"
     >
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -75,28 +80,33 @@
 
   <!-- Mobile Menu (hidden by default) -->
   <div id="mobile-menu" class="hidden md:hidden pt-4 pb-2">
-    @if(user)
+    @if(isAdmin)
       <a
-        href="{{ route('admin.garden_manager.index') }}"
+        href="{{ route('admin.dashboard') }}"
+        class="block nav-text-white hover:text-green-300 py-2 px-4"
+      >Admin Dashboard</a>
+      <a
+        href="{{ route('admin.plant_info.index') }}"
+        class="block nav-text-white hover:text-green-300 py-2 px-4"
+      >Kelola Info Tanaman</a>
+    @elseif(isAuthenticated)
+      <a
+        href="{{ route('garden_manager.index') }}"
         class="block nav-text-white hover:text-green-300 py-2 px-4"
       >Garden Manager</a>
+      <a
+        href="{{ route('plant_info.index') }}"
+        class="block nav-text-white hover:text-green-300 py-2 px-4"
+      >Info Tanaman</a>
     @endif
-    <a
-      href="{{ route('plant_care.index') }}"
-      class="block nav-text-white hover:text-green-300 py-2 px-4"
-    >Plant Care</a>
-    <a
-      href="{{ route('plant_info.index') }}"
-      class="block nav-text-white hover:text-green-300 py-2 px-4"
-    >Plant Info</a>
     <a
       href="{{ route('community.index') }}"
       class="block nav-text-white hover:text-green-300 py-2 px-4"
-    >Community</a>
-    <a href="{{ route('about') }}" class="block nav-text-white hover:text-green-300 py-2 px-4">About</a>
-    @if(user)
+    >Komunitas</a>
+    <a href="{{ route('about') }}" class="block nav-text-white hover:text-green-300 py-2 px-4">Tentang</a>
+    @if(isAuthenticated)
       <a
-        href="{{ route('admin.profile') }}"
+        href="{{ route('profile') }}"
         class="block bg-green-600 hover:bg-green-700 text-[#F1F0E9] py-2 px-4 rounded-lg mt-2 text-center"
       >
         <svg

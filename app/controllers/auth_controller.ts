@@ -4,6 +4,12 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import env from "#start/env"
 
+const ADMIN_EMAILS = ['admin@gmail.com']
+
+function isAdminEmail(email: string) {
+  return ADMIN_EMAILS.includes(email.trim().toLowerCase())
+}
+
 export default class AuthController {
   async register({ request, response }: HttpContext) {
     // const { email, password } = request.only(['email', 'password'])
@@ -11,17 +17,14 @@ export default class AuthController {
       fullname,
       username,
       email,
-      password,
-      confirmPassword
-    } = request.only(['fullname', 'username', 'email', 'password', 'confirmPassword'])
-    if (password !== confirmPassword) {
-      return response.badRequest('Passwords do not match')
-    }
-    
+      password
+    } = request.only(['fullname', 'username', 'email', 'password'])
+
     const hashedPassword = await bcrypt.hash(password, 10)
+    const role = isAdminEmail(email) ? 'admin' : 'user'
 
     try {
-      await User.create({ fullname, username, email, password: hashedPassword })
+      await User.create({ fullname, username, email, password: hashedPassword, role })
       return response.redirect().toRoute('auth.login')
     } catch (err) {
       return response.badRequest('User already exists')
@@ -36,21 +39,35 @@ export default class AuthController {
       return response.redirect().toRoute('auth.login')
     }
 
+    if (isAdminEmail(user.email) && user.role !== 'admin') {
+      user.role = 'admin'
+      await user.save()
+    }
+
     const token = jwt.sign(
-      { id: user._id, email: user.email },
+      { id: user._id, email: user.email, role: user.role },
       env.get('JWT_SECRET'),
       { expiresIn: '1h' }
     )
 
     response.cookie('token', token, {
       httpOnly: true,
+      path: '/',
+      sameSite: 'lax',
     })
 
-    return response.redirect().toRoute('admin.garden_manager.index')
+    if (user.role === 'admin') {
+      return response.redirect().toRoute('admin.dashboard')
+    }
+
+    return response.redirect().toRoute('garden_manager.index')
   }
 
   async logout({ response }: HttpContext) {
-    response.clearCookie('token')
-    return response.redirect().toRoute('auth.login')
+    response.clearCookie('token', {
+      path: '/',
+      httpOnly: true,
+    })
+    return response.redirect('/')
   }
 }

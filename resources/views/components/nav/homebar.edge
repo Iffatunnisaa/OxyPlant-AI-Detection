@@ -1,39 +1,44 @@
 <!-- Navigation -->
-<nav class="nav-bg shadow-sm py-4 px-6 sticky top-0 z-50" id="main-nav">
+<nav class="home-nav fixed top-0 inset-x-0 z-50 py-4 px-6 transition-all duration-300" id="main-nav">
   <div class="max-w-6xl mx-auto flex justify-between items-center">
     <!-- Logo -->
-    <div class="text-xl md:text-2xl font-bold nav-text-white">
+    <div class="text-xl md:text-2xl font-bold nav-brand">
       <a href="{{ route('home') }}" class="hover:no-underline">OxyPlant</a>
     </div>
 
     <!-- Desktop Menu -->
     <div class="hidden md:flex space-x-4 lg:space-x-6 items-center">
-      @if(user)
+      @if(isAdmin)
         <a
-          href="{{ route('admin.garden_manager.index') }}"
-          class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+          href="{{ route('admin.dashboard') }}"
+          class="nav-link hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Admin Dashboard</a>
+        <a
+          href="{{ route('admin.plant_info.index') }}"
+          class="nav-link hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Kelola Info Tanaman</a>
+      @elseif(isAuthenticated)
+        <a
+          href="{{ route('garden_manager.index') }}"
+          class="nav-link hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
         >Garden Manager</a>
+        <a
+          href="{{ route('plant_info.index') }}"
+          class="nav-link hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Info Tanaman</a>
       @endif
-      <a
-        href="{{ route('plant_care.index') }}"
-        class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-      >Plant Care</a>
-      <a
-        href="{{ route('plant_info.index') }}"
-        class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-      >Plant Info</a>
       <a
         href="{{ route('community.index') }}"
         class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-      >Community</a>
+      >Komunitas</a>
       <a
         href="{{ route('about') }}"
         class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-      >About</a>
-      @if(user)
+      >Tentang
+      @if(isAuthenticated)
         <a
-          href="{{ route('admin.profile') }}"
-          class="text-[#4E504D] hover:text-green-300 px-3 py-1 md:px-4 md:py-2 rounded-lg ml-2 md:ml-4 transition-colors duration-300"
+          href="{{ route('profile') }}"
+          class="nav-profile text-[#F1F0E9] hover:text-green-300 px-3 py-1 md:px-4 md:py-2 rounded-lg ml-2 md:ml-4 transition-colors duration-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -53,17 +58,17 @@
       @else
         <a
           href="{{ route('auth.login') }}"
-          class="bg-green-600 hover:bg-green-700 text-[#F1F0E9] px-3 py-1 md:px-4 md:py-2 rounded-lg ml-2 md:ml-4 transition-colors duration-300 text-sm md:text-base"
+          class="inline-flex items-center justify-center bg-yellow-400 hover:bg-yellow-300 text-[#0f2c21] font-semibold px-4 py-2 rounded-lg ml-2 md:ml-4 text-sm md:text-base transition-colors duration-300"
         >
           Login
-            </a>
+        </a>
       @endif
     </div>
 
     <!-- Mobile Menu Button -->
     <button
       id="mobile-menu-button"
-      class="md:hidden text-[#F1F0E9] focus:outline-none transition-colors duration-300"
+      class="md:hidden nav-mobile-button focus:outline-none transition-colors duration-300"
       onclick="toggleMobileMenu()"
     >
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,28 +80,33 @@
 
   <!-- Mobile Menu (hidden by default) -->
   <div id="mobile-menu" class="hidden md:hidden pt-4 pb-2">
-    @if(user)
+    @if(isAdmin)
       <a
-        href="{{ route('admin.garden_manager.index') }}"
-        class="block nav-text-white hover:text-green-300 py-2 px-4"
+        href="{{ route('admin.dashboard') }}"
+        class="block nav-link hover:text-green-300 py-2 px-4"
+      >Admin Dashboard</a>
+      <a
+        href="{{ route('admin.plant_info.index') }}"
+        class="block nav-link hover:text-green-300 py-2 px-4"
+      >Kelola Info Tanaman</a>
+    @elseif(isAuthenticated)
+      <a
+        href="{{ route('garden_manager.index') }}"
+        class="block nav-link hover:text-green-300 py-2 px-4"
       >Garden Manager</a>
+      <a
+        href="{{ route('plant_info.index') }}"
+        class="block nav-link hover:text-green-300 py-2 px-4"
+      >Info Tanaman</a>
     @endif
     <a
-      href="{{ route('plant_care.index') }}"
-      class="block nav-text-white hover:text-green-300 py-2 px-4"
-    >Plant Care</a>
-    <a
-      href="{{ route('plant_info.index') }}"
-      class="block nav-text-white hover:text-green-300 py-2 px-4"
-    >Plant Info</a>
-    <a
       href="{{ route('community.index') }}"
-      class="block nav-text-white hover:text-green-300 py-2 px-4"
-    >Community</a>
-    <a href="{{ route('about') }}" class="block nav-text-white hover:text-green-300 py-2 px-4">About</a>
-    @if(user)
+      class="block nav-link hover:text-green-300 py-2 px-4"
+    >Komunitas</a>
+    <a href="{{ route('about') }}" class="block nav-link hover:text-green-300 py-2 px-4">Tentang</a>
+    @if(isAuthenticated)
       <a
-        href="{{ route('admin.profile') }}"
+        href="{{ route('profile') }}"
         class="block bg-green-600 hover:bg-green-700 text-[#F1F0E9] py-2 px-4 rounded-lg mt-2 text-center"
       >
         <svg
@@ -117,10 +127,10 @@
     @else
       <a
         href="{{ route('auth.login') }}"
-        class="block bg-green-600 hover:bg-green-700 text-[#F1F0E9] py-2 px-4 rounded-lg mt-2 text-center"
+        class="block bg-yellow-400 hover:bg-yellow-300 text-[#0f2c21] font-semibold py-2 px-4 rounded-lg mt-2 text-center transition-colors duration-300"
       >
         Login
-          </a>
+      </a>
     @endif
   </div>
 </nav>

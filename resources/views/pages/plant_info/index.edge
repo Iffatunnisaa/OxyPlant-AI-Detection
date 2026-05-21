@@ -1,948 +1,234 @@
-@layout.app({ title: "Plant Information | OxyPlant" })
-  @slot('style')
-    <style>
-      .hide-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      
-      .hide-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-      
-      .snap-x {
-        scroll-snap-type: x mandatory;
-      }
-      
-      .snap-center {
-        scroll-snap-align: center;
-      }
-    </style>
-  @endslot
+@layout.app({ title: "Info Tanaman | OxyPlant" })
+
   @slot('main')
-    <!-- Header Section with Image in Bottom Right -->
-    <header class="bg-[#F2F1EB] py-12 relative min-h-[450px] overflow-hidden">
-      <!-- Text Content -->
-      <div class="max-w-6xl mx-auto h-full flex flex-col justify-center pt-20 pb-28">
-        <h1 class="text-4xl font-bold text-green-700">
-          Plant Information
-        </h1>
-        <p class="mt-4 text-gray-600 max-w-lg">
-          Temukan berbagai jenis tanaman <br />dan karakteristiknya
-        </p>
-      </div>
+    <main class="bg-[#f6f4ee] text-[#173428]">
 
-      <!-- Image positioned at bottom right -->
-      <div class="absolute bottom-0 right-0 w-[450px] md:w-[750px]">
-        <img src="/resources/img/hero2.png" alt="Plant Illustration" class="w-full h-auto object-contain" />
-      </div>
-    </header>
+      <!-- HERO -->
+      <section class="relative overflow-hidden bg-[#f4f1e8]">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(199,217,198,0.72),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.6),rgba(255,255,255,0))]"></div>
 
-    <!-- Main Content Section -->
-    <section class="p-5">
-      <!-- Container dengan scroll horizontal -->
-      <div class="relative">
-        <!-- Wrapper untuk mengatur posisi tengah -->
-        <div class="flex justify-center">
-          <!-- Container card dengan scroll -->
-          <div class="flex overflow-x-auto pb-6 pt-6 space-x-6 max-w-full hide-scrollbar px-6">
-            <!-- Card Kategori 1: Tanaman Langka -->
-            <div
-              class="flex-shrink-0 p-6 bg-[#F2F1EB] backdrop-blur-sm shadow-xl rounded-xl w-64 flex items-center transform transition-all duration-300 hover:scale-105"
-            >
-              <img
-                src="/resources/img/tanaman_langka.png"
-                alt="Tanaman Langka"
-                class="w-20 h-20 object-cover rounded-lg"
-              />
-              <p class="ml-4 text-base font-semibold">
-                Tanaman Langka
-              </p>
+        <div class="relative mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-16 md:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+          
+          <div class="max-w-2xl">
+            <div class="inline-flex items-center rounded-full border border-[#d8e2d2] bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#14573e] shadow-sm backdrop-blur">
+              Info Tanaman
             </div>
 
-            <!-- Card Kategori 2: Bunga -->
-            <div
-              class="flex-shrink-0 p-6 bg-[#F2F1EB] backdrop-blur-sm shadow-xl rounded-xl w-64 flex items-center transform transition-all duration-300 hover:scale-105"
-            >
-              <img src="/resources/img/bunga.png" alt="Bunga" class="w-20 h-20 object-cover rounded-lg" />
-              <p class="ml-4 text-base font-semibold">
-                Bunga
-              </p>
+            <h1 class="mt-5 text-4xl font-bold leading-tight text-[#0f4a34] md:text-5xl">
+              Pahami tanaman Anda dan kenali gejala penyakit sejak dini.
+            </h1>
+
+            <p class="mt-5 max-w-xl text-lg leading-relaxed text-[#4d6056]">
+              Pelajari karakteristik tanaman, kenali gejala penyakit, dan gunakan informasi ini untuk memahami kondisi tanaman Anda. Halaman ini membantu Anda membuat keputusan perawatan yang lebih tepat berdasarkan kondisi nyata di lapangan.
+            </p>
+
+            <!-- subtle connection -->
+            <p class="mt-4 text-sm text-[#6a7b70]">
+              Setelah melakukan deteksi di <span class="font-semibold text-[#14573e]">Garden Manager</span>, Anda dapat kembali ke halaman ini untuk memahami hasilnya.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#plant-catalog" class="inline-flex items-center justify-center rounded-full border border-[#d8e2d2] bg-white/90 px-5 py-3 text-sm font-semibold text-[#14573e] shadow-sm transition hover:-translate-y-0.5 hover:bg-white">
+                Explore Tanaman
+              </a>
+
+              <a href="{{ route('garden_manager.index') }}" 
+              class="inline-flex items-center justify-center text-sm font-semibold text-[#14573e] hover:underline">
+                Buka Garden Manager →
+              </a>
             </div>
 
-            <!-- Card Kategori 3: Buah -->
-            <div
-              class="flex-shrink-0 p-6 bg-[#F2F1EB] backdrop-blur-sm shadow-xl rounded-xl w-64 flex items-center transform transition-all duration-300 hover:scale-105"
-            >
-              <img src="/resources/img/buah.png" alt="Buah" class="w-20 h-20 object-cover rounded-lg" />
-              <p class="ml-4 text-base font-semibold">
-                Buah
-              </p>
+            <!-- USER-RELEVANT METRICS -->
+            <div class="mt-8 grid gap-3 sm:grid-cols-3">
+              <div class="rounded-3xl border border-[#0e1a07] bg-white/85 p-4 shadow-sm">
+                <p class="text-2xl font-bold text-[#0f4a34]">{{ stats.plantCount }}</p>
+                <p class="mt-1 text-sm text-[#4d6056]">Tanaman tersedia</p>
+              </div>
+
+              <div class="rounded-3xl border border-[#dfe6db] bg-white/85 p-4 shadow-sm">
+                <p class="text-2xl font-bold text-[#0f4a34]">{{ stats.diseaseCount }}</p>
+                <p class="mt-1 text-sm text-[#4d6056]">Penyakit umum</p>
+              </div>
+
+              <div class="rounded-3xl border border-[#dfe6db] bg-white/85 p-4 shadow-sm">
+                <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#14573e]">AI Support</p>
+                <p class="mt-1 text-sm text-[#4d6056]">{{ stats.aiText }}</p>
+              </div>
             </div>
 
-            <!-- Card Kategori 4: Sayuran -->
-            <div
-              class="flex-shrink-0 p-6 bg-[#F2F1EB] backdrop-blur-sm shadow-xl rounded-xl w-64 flex items-center transform transition-all duration-300 hover:scale-105"
-            >
-              <img src="/resources/img/sayuran.png" alt="Sayuran" class="w-20 h-20 object-cover rounded-lg" />
-              <p class="ml-4 text-base font-semibold">
-                Sayuran
-              </p>
+            <!-- CONTEXT NOTE -->
+            <div class="mt-6 rounded-2xl border border-[#dfe6db] bg-white px-5 py-4 text-sm text-[#4d6056]">
+              <span class="font-semibold text-[#14573e]">Tip:</span>
+              Gunakan halaman ini untuk memahami gejala dan perawatan tanaman. 
+              Untuk melakukan deteksi penyakit secara langsung, gunakan fitur di 
+              <span class="font-semibold text-[#14573e]">Garden Manager</span>.
             </div>
+
           </div>
-        </div>
-      </div>
-    </section>
 
-    <style>
-      .hide-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      
-      .hide-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-    </style>
+          <!-- RIGHT PANEL -->
+          <div class="relative">
+            <div class="absolute -inset-4 rounded-4xl bg-[#c7d9c6]/60 blur-2xl"></div>
 
-    <!-- Tanaman Langka -->
-    <section class="p-5 bg-[#C7D9C6]">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-center text-green-800 mb-8">
-          Tanaman Langka
-        </h2>
+            <div class="relative overflow-hidden rounded-4xl border border-white/70 bg-white/80 p-6 shadow-2xl backdrop-blur-md md:p-8">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#6a7b70]">How to use</p>
+                <h2 class="mt-1 text-2xl font-bold text-[#0f4a34]">
+                  Gunakan sebagai panduan memahami kondisi tanaman
+                </h2>
+              </div>
 
-        <!-- Carousel Container -->
-        <div class="relative">
-          <!-- Carousel Content -->
-          <div class="flex overflow-x-auto pb-6 hide-scrollbar snap-x snap-mandatory">
-            <div class="flex space-x-6 px-2">
-              <!-- Plant 1 - Monstera -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Monstera (Monstera deliciosa)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman hias dengan daun besar berlubang khas. Cocok untuk dekorasi rumah atau kantor.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Terang tidak langsung
-                        </li>
-                        <li>
-                          Penyiraman: 2-3 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 18-30°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Potong daun tua yang <br />
-                        menguning, gunakan pupuk<br />
-                        cair sebulan sekali, dan <br />
-                        bersihkan daun dari debu.
-                      </p>
-                    </div>
-                  </div>
+              <div class="mt-6 space-y-4">
+                <div class="rounded-3xl border bg-[#fbfcf8] p-4">
+                  <p class="text-sm font-semibold text-[#14573e]">1. Pelajari tanaman</p>
+                  <p class="text-sm text-[#4d6056] mt-1">Kenali kebutuhan dasar dan karakteristik tanaman.</p>
                 </div>
 
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[150px]">
-                  <img src="/resources/img/mons.png" alt="Monstera Plant" class="w-full h-full object-contain" />
+                <div class="rounded-3xl border bg-[#fbfcf8] p-4">
+                  <p class="text-sm font-semibold text-[#14573e]">2. Kenali gejala</p>
+                  <p class="text-sm text-[#4d6056] mt-1">Bandingkan kondisi tanaman dengan gejala penyakit umum.</p>
+                </div>
+
+                <div class="rounded-3xl border bg-[#fbfcf8] p-4">
+                  <p class="text-sm font-semibold text-[#14573e]">3. Ambil tindakan</p>
+                  <p class="text-sm text-[#4d6056] mt-1">Lakukan perawatan sebelum kondisi memburuk.</p>
                 </div>
               </div>
 
-              <!-- Plant 2 - Aglaonema -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Aglaonema
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman dengan daun berwarna-warni, sering disebut "Sri Rejeki".
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Redup hingga sedang
-                        </li>
-                        <li>
-                          Penyiraman: 2-3 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 20-30°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Hindari sinar matahari langsung,<br />bersihkan daun agar tetap segar.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[150px]">
-                  <img src="/resources/img/aglo.png" alt="Aglaonema" class="w-full h-full object-contain" />
-                </div>
-              </div>
-
-              <!-- Plant 3 - Sansevieria -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Sansevieria (Lidah Mertua)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman tahan banting yang bisa menyerap polusi udara.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Redup hingga terang
-                        </li>
-                        <li>
-                          Penyiraman: 1-2 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 15-32°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Jangan terlalu sering disiram, pastikan tanah kering sebelum penyiraman berikutnya.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[150px]">
-                  <img src="/resources/img/sansi.png" alt="Sansevieria" class="w-full h-full object-contain" />
-                </div>
-              </div>
-
-              <!-- Plant 4 - Kemuning -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Kemuning (Murraya paniculata)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman berbunga harum dengan khasiat obat dan cocok sebagai tanaman hias atau pagar hidup.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Sinar matahari penuh hingga setengah teduh
-                        </li>
-                        <li>
-                          Penyiraman: 2-3 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 20-32°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Pangkas secara berkala untuk menjaga <br />
-                        bentuknya dan merangsang <br />
-                        pertumbuhan. Pupuk organik <br />
-                        dapat diberikan setiap bulan.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[140px]">
-                  <img src="/resources/img/kemuning.png" alt="kemuning" class="w-full h-full object-contain" />
-                </div>
+              <div class="mt-6 rounded-3xl bg-[#14573e] p-5 text-white">
+                <p class="text-sm">
+                  Halaman ini membantu Anda memahami hasil deteksi yang dilakukan melalui Garden Manager.
+                </p>
               </div>
             </div>
           </div>
+
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Bunga -->
-    <section class="p-5 bg-[#C7D9C6]">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-center text-green-800 mb-8">
-          Bunga
-        </h2>
-
-        <!-- Carousel Container -->
-        <div class="relative">
-          <!-- Carousel Content -->
-          <div class="flex overflow-x-auto pb-6 hide-scrollbar snap-x snap-mandatory">
-            <div class="flex space-x-6 px-2">
-              <!-- Bunga 1 - Tulip -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Tulip (Tulipa sp)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Bunga musim semi yang terkenal dengan bentuk elegan dan warna-warna cerahnya.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Matahari penuh
-                        </li>
-                        <li>
-                          Penyiraman: Sedang, jangan sampai tanah becek
-                        </li>
-                        <li>
-                          Suhu: 12-20°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Tanam umbi di musim gugur jika <br />di daerah subtropis. Di iklim tropis,<br />simpan umbi di lemari es <br />selama 6–8 minggu sebelum <br />ditanam.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-2 w-[60px] md:w-[90px]">
-                  <img src="/resources/img/tulip.png" alt="Tulip" class="w-full h-full object-contain" />
-                </div>
-              </div>
-
-              <!-- Bunga 2 - Mawar -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Mawar (Rosa sp)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Bunga klasik dengan aroma khas dan simbol cinta yang tak lekang oleh waktu.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Matahari penuh
-                        </li>
-                        <li>
-                          Penyiraman: 2-3 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 18-28°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Pangkas secara rutin untuk merangsang bunga baru dan mencegah penyakit.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[80px] md:w-[120px]">
-                  <img src="/resources/img/mawar.png" alt="Mawar" class="w-full h-full object-contain" />
-                </div>
-              </div>
-
-              <!-- Bunga 3 - Anggrek -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Anggrek (Orchidaceae)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    anaman elegan dengan bunga eksotis yang tahan lama dan banyak variasi warna.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Terang tapi tidak langsung
-                        </li>
-                        <li>
-                          Penyiraman: 1-2 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 18-30°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Gunakan pupuk khusus anggrek sebulan sekali dan jaga kelembapan sekitar tanaman.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-2 w-[60px] md:w-[100px]">
-                  <img src="/resources/img/anggrek.png" alt="Anggrek" class="w-full h-full object-contain" />
-                </div>
-              </div>
-
-              <!-- Bunga 4 - Kamboja -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Kamboja (Plumeria sp)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Bunga tropis yang harum dan tahan panas, sering dijumpai di pekarangan atau area pemakaman.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Matahari penuh
-                        </li>
-                        <li>
-                          Penyiraman: 1-2 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 24-35°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Potong ranting yang mati dan beri pupuk kandang atau NPK sebulan sekali saat musim berbunga.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-2 w-[100px] md:w-[150px]">
-                  <img src="/resources/img/kamboja.png" alt="Kamboja" class="w-full h-full object-contain" />
-                </div>
-              </div>
-            </div>
+      <!-- NAV -->
+      <section class="border-y border-[#d8e2d2] bg-[#e3eddc]">
+        <div class="mx-auto max-w-7xl px-6 py-4">
+          <div class="flex gap-3 overflow-x-auto">
+            @each(crop in crops)
+              <a href="#{{ crop.id }}" class="whitespace-nowrap rounded-full border bg-white px-4 py-2 text-sm text-[#174c37]">
+                {{ crop.name }}
+              </a>
+            @endeach
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Buah -->
-    <section class="p-5 bg-[#C7D9C6]">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-center text-green-800 mb-8">
-          Buah
-        </h2>
+      <!-- CATALOG -->
+      <section id="plant-catalog" class="py-16 md:py-20 scroll-mt-28">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="text-center mb-12 max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-[#0f4a34]">
+              Informasi tanaman dan gejala penyakit
+            </h2>
+            <p class="mt-4 text-[#4d6056]">
+              Gunakan informasi ini untuk memahami kondisi tanaman dan mengambil keputusan perawatan yang tepat.
+            </p>
+          </div>
 
-        <!-- Carousel Container -->
-        <div class="relative">
-          <!-- Carousel Content -->
-          <div class="flex overflow-x-auto pb-6 hide-scrollbar snap-x snap-mandatory">
-            <div class="flex space-x-6 px-2">
-              <!-- Plant 1 - Monstera -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Monstera (Monstera deliciosa)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman hias dengan daun besar berlubang khas. Cocok untuk dekorasi rumah atau kantor.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Terang tidak langsung
-                        </li>
-                        <li>
-                          Penyiraman: 2-3 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 18-30°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Potong daun tua yang <br />
-                        menguning, gunakan pupuk<br />
-                        cair sebulan sekali, dan <br />
-                        bersihkan daun dari debu.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[120px]">
-                  <img src="/resources/img/jeruk.png" alt="Monstera Plant" class="w-full h-full object-contain" />
-                </div>
+          <div class="space-y-6">
+            @each(crop in crops)
+              @!component('components/plant_info/crop_card', { crop: crop })
+            @else
+              <div class="rounded-3xl bg-white p-8 text-center text-[#4d6056]">
+                No plant data available.
               </div>
-
-              <!-- Plant 2 - Aglaonema -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Aglaonema
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman dengan daun berwarna-warni, sering disebut "Sri Rejeki".
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Redup hingga sedang
-                        </li>
-                        <li>
-                          Penyiraman: 2-3 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 20-30°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Hindari sinar matahari langsung,<br />bersihkan daun agar tetap segar.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[120px]">
-                  <img src="/resources/img/strawberry.png" alt="Monstera Plant" class="w-full h-full object-contain" />
-                </div>
-              </div>
-
-              <!-- Plant 3 - Sansevieria -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Sansevieria (Lidah Mertua)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman tahan banting yang bisa menyerap polusi udara.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Redup hingga terang
-                        </li>
-                        <li>
-                          Penyiraman: 1-2 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 15-32°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Jangan terlalu sering disiram, pastikan tanah kering sebelum penyiraman berikutnya.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[150px]">
-                  <img src="/resources/img/pepaya.png" alt="Monstera Plant" class="w-full h-full object-contain" />
-                </div>
-              </div>
-
-              <!-- Plant 3 - Sansevieria -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Sansevieria (Lidah Mertua)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman tahan banting yang bisa menyerap polusi udara.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Redup hingga terang
-                        </li>
-                        <li>
-                          Penyiraman: 1-2 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 15-32°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Jangan terlalu sering disiram, pastikan tanah kering sebelum penyiraman berikutnya.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[150px]">
-                  <img src="/resources/img/blueberry.png" alt="Monstera Plant" class="w-full h-full object-contain" />
-                </div>
-              </div>
-            </div>
+            @endeach
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Sayur -->
-    <section class="p-5 bg-[#C7D9C6]">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-center text-green-800 mb-8">
-          Sayur
-        </h2>
+      <!-- INTERPRETATION SECTION -->
+      <section class="bg-[#f0f4ea] py-16 md:py-20">
+        <div class="mx-auto max-w-7xl px-6 grid gap-6 lg:grid-cols-2">
 
-        <!-- Carousel Container -->
-        <div class="relative">
-          <!-- Carousel Content -->
-          <div class="flex overflow-x-auto pb-6 hide-scrollbar snap-x snap-mandatory">
-            <div class="flex space-x-6 px-2">
-              <!-- Plant 1 - Monstera -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Monstera (Monstera deliciosa)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman hias dengan daun besar berlubang khas. Cocok untuk dekorasi rumah atau kantor.
-                  </p>
+          <div class="bg-[#0f4a34] text-white p-8 rounded-3xl">
+            <h2 class="text-2xl font-bold">
+              Gunakan informasi ini setelah deteksi
+            </h2>
+            <p class="mt-4 text-white/85">
+              Setelah melakukan deteksi di Garden Manager, kembali ke halaman ini untuk memahami gejala penyakit dan menentukan langkah perawatan yang tepat.
+            </p>
 
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Terang tidak langsung
-                        </li>
-                        <li>
-                          Penyiraman: 2-3 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 18-30°C
-                        </li>
-                      </ul>
-                    </div>
+            <a href="{{ route('garden_manager.index') }}" class="mt-6 inline-block text-sm font-semibold underline">
+              Buka Garden Manager &rarr;
+            </a>
+          </div>
 
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Potong daun tua yang <br />
-                        menguning, gunakan pupuk<br />
-                        cair sebulan sekali, dan <br />
-                        bersihkan daun dari debu.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+          <div class="grid gap-4 md:grid-cols-3">
+            <div class="bg-white p-6 rounded-3xl">
+              <h3 class="font-bold">Bandingkan gejala</h3>
+              <p class="text-sm mt-2 text-[#4d6056]">Cocokkan hasil deteksi dengan informasi di halaman ini.</p>
+            </div>
 
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[120px]">
-                  <img src="/resources/img/wortel.png" alt="Monstera Plant" class="w-full h-full object-contain" />
-                </div>
-              </div>
+            <div class="bg-white p-6 rounded-3xl">
+              <h3 class="font-bold">Pahami penyebab</h3>
+              <p class="text-sm mt-2 text-[#4d6056]">Kenali faktor yang menyebabkan penyakit muncul.</p>
+            </div>
 
-              <!-- Plant 2 - Aglaonema -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Aglaonema
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman dengan daun berwarna-warni, sering disebut "Sri Rejeki".
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Redup hingga sedang
-                        </li>
-                        <li>
-                          Penyiraman: 2-3 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 20-30°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Hindari sinar matahari langsung,<br />bersihkan daun agar tetap segar.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[150px]">
-                  <img src="/resources/img/bayam.png" alt="Monstera Plant" class="w-full h-full object-contain" />
-                </div>
-              </div>
-
-              <!-- Plant 3 - Sansevieria -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Sansevieria (Lidah Mertua)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman tahan banting yang bisa menyerap polusi udara.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Redup hingga terang
-                        </li>
-                        <li>
-                          Penyiraman: 1-2 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 15-32°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Jangan terlalu sering disiram, pastikan tanah kering sebelum penyiraman berikutnya.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[110px]">
-                  <img src="/resources/img/kentang.png" alt="Monstera Plant" class="w-full h-full object-contain" />
-                </div>
-              </div>
-
-              <!-- Plant 3 - Sansevieria -->
-              <div class="flex-shrink-0 w-80 bg-white rounded-xl shadow-lg overflow-hidden snap-center relative">
-                <div class="p-6 pb-16">
-                  <!-- Added pb-16 to make space for the image -->
-                  <h3 class="text-xl font-bold text-green-700 mb-2">
-                    Sansevieria (Lidah Mertua)
-                  </h3>
-                  <p class="text-gray-600 mb-4">
-                    Tanaman tahan banting yang bisa menyerap polusi udara.
-                  </p>
-
-                  <div class="space-y-3">
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Kebutuhan Tumbuh:
-                      </h4>
-                      <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>
-                          Cahaya: Redup hingga terang
-                        </li>
-                        <li>
-                          Penyiraman: 1-2 kali seminggu
-                        </li>
-                        <li>
-                          Suhu: 15-32°C
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 class="font-semibold text-green-600">
-                        Tips Perawatan:
-                      </h4>
-                      <p class="text-gray-600 text-sm">
-                        Jangan terlalu sering disiram, pastikan tanah kering sebelum penyiraman berikutnya.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Image positioned at bottom right -->
-                <div class="absolute bottom-0 right-0 w-[100px] md:w-[160px]">
-                  <img src="/resources/img/brokoli.png" alt="Monstera Plant" class="w-full h-full object-contain" />
-                </div>
-              </div>
+            <div class="bg-white p-6 rounded-3xl">
+              <h3 class="font-bold">Tentukan tindakan</h3>
+              <p class="text-sm mt-2 text-[#4d6056]">Lakukan perawatan sebelum kondisi memburuk.</p>
             </div>
           </div>
+
         </div>
-      </div>
-    </section>
+      </section>
+
+    </main>
   @endslot
+
   @slot('script')
     <script>
-      // Optional JavaScript for arrow navigation
-      document.addEventListener("DOMContentLoaded", function() {
-        const carousel = document.querySelector(".hide-scrollbar");
-        const prevBtn = document.querySelector('button[class*="left-2"]');
-        const nextBtn = document.querySelector('button[class*="right-2"]');
-        if (prevBtn && nextBtn) {
-          prevBtn.addEventListener("click", () => {
-            carousel.scrollBy({
-              left: -300,
-              behavior: "smooth"
+      document.addEventListener('DOMContentLoaded', function() {
+        const toggleButtons = document.querySelectorAll('.toggle-diseases-btn');
+
+        toggleButtons.forEach(button => {
+          button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const cropId = this.dataset.cropId;
+            const container = document.querySelector(`[data-disease-container="${cropId}"]`);
+            const diseaseItems = container.querySelectorAll('.disease-item');
+            const isExpanded = this.dataset.expanded === 'true';
+
+            diseaseItems.forEach((item, index) => {
+              if (index >= 3) {
+                if (isExpanded) {
+                  // Collapse: hide items after 3rd
+                  item.style.display = 'none';
+                  item.dataset.hidden = 'true';
+                } else {
+                  // Expand: show all items
+                  item.style.display = '';
+                  delete item.dataset.hidden;
+                }
+              }
             });
+
+            // Toggle button text and state
+            const viewMoreText = this.querySelector('.view-more-text');
+            const showLessText = this.querySelector('.show-less-text');
+
+            if (isExpanded) {
+              // Switch back to "View more"
+              viewMoreText.classList.remove('hidden');
+              showLessText.classList.add('hidden');
+              this.dataset.expanded = 'false';
+            } else {
+              // Switch to "Show less"
+              viewMoreText.classList.add('hidden');
+              showLessText.classList.remove('hidden');
+              this.dataset.expanded = 'true';
+            }
           });
-          nextBtn.addEventListener("click", () => {
-            carousel.scrollBy({
-              left: 300,
-              behavior: "smooth"
-            });
-          });
-        }
+        });
       });
     </script>
   @endslot
+
 @end

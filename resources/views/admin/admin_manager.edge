@@ -1,0 +1,66 @@
+@layout.app({ title: "Admin Dashboard | OxyPlant" })
+  @slot('main')
+    <main class="bg-[#f2f1eb]">
+      <section class="mx-auto max-w-6xl px-6 py-12 md:py-16">
+        <div class="mb-8">
+          <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[#14573e]">Admin Area</p>
+          <h1 class="mt-3 text-3xl font-bold text-[#0f4a34] md:text-4xl">
+            OxyPlant Admin Dashboard
+          </h1>
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-[#5e6d63] md:text-base">
+            Kelola data utama yang dipakai pengguna OxyPlant. Akun admin memiliki akses ke halaman manajemen yang tidak tampil untuk user biasa.
+          </p>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2">
+          <a
+            href="{{ route('admin.plant_info.index') }}"
+            class="rounded-2xl border border-[#dbe3d7] bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-md"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Manajemen Konten</p>
+                <h2 class="mt-2 text-xl font-bold text-[#0f4a34]">Kelola Info Tanaman</h2>
+                <p class="mt-2 text-sm leading-relaxed text-[#5e6d63]">
+                  Tambah, edit, dan hapus data tanaman, perawatan, serta gejala penyakit yang tampil di fitur Plant Info.
+                </p>
+              </div>
+              <span class="rounded-full bg-[#edf5ea] px-3 py-1 text-xs font-semibold text-[#14573e]">Admin</span>
+            </div>
+          </a>
+
+          <a
+            href="{{ route('plant_info.index') }}"
+            class="rounded-2xl border border-[#dbe3d7] bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-md"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Pratinjau</p>
+                <h2 class="mt-2 text-xl font-bold text-[#0f4a34]">Lihat Info Tanaman</h2>
+                <p class="mt-2 text-sm leading-relaxed text-[#5e6d63]">
+                  Lihat tampilan data tanaman dari sisi pengguna setelah melakukan perubahan.
+                </p>
+              </div>
+              <span class="rounded-full bg-[#f8faf5] px-3 py-1 text-xs font-semibold text-[#6a7b70]">Public</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="mt-8 rounded-2xl border border-[#dbe3d7] bg-white p-6 shadow-sm">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm font-semibold text-[#0f4a34]">Login sebagai admin</p>
+              <p class="mt-1 text-sm text-[#5e6d63]">{{ user.email }} - role: {{ user.role }}</p>
+            </div>
+            <a
+              href="{{ route('auth.logout') }}"
+              class="inline-flex items-center justify-center rounded-lg border border-[#dbe3d7] px-4 py-2 text-sm font-semibold text-[#14573e] transition duration-200 hover:bg-[#f8faf5]"
+            >
+              Keluar
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+  @endslot
+@end

@@ -1,0 +1,423 @@
+@layout.app({ title: plant ? `Edit ${plant.name} | OxyPlant` : "Tambah Tanaman | OxyPlant" })
+
+@slot('main')
+  <main class="bg-[#f2f1eb]">
+    <section class="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <!-- Header -->
+      <div class="mb-8">
+        <a href="{{ route('admin.plant_info.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#14573e] hover:text-[#0f4a34]">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Kembali ke Daftar Tanaman
+        </a>
+        <h1 class="mt-4 text-3xl font-bold text-[#0f4a34] lg:text-4xl">
+          @if(plant)
+            Edit Tanaman: {{ plant.name }}
+          @else
+            Tambah Tanaman Baru
+          @endif
+        </h1>
+        <p class="mt-2 text-sm text-[#5e6d63]">
+          @if(plant)
+            Perbarui informasi tanaman dan data penyakit.
+          @else
+            Tambahkan tanaman baru ke basis data Info Tanaman dengan instruksi perawatan dan penyakit umum.
+          @endif
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form
+        id="plant-form"
+        class="space-y-8 rounded-3xl border border-[#dbe3d7] bg-white p-6 shadow-sm sm:p-8"
+        enctype="multipart/form-data"
+        data-store-url="{{ route('admin.plant_info.store') }}"
+        @if(plant)
+          data-mode="edit"
+          data-update-url="{{ route('admin.plant_info.update', { id: plant._id }) }}"
+        @else
+          data-mode="create"
+        @endif
+      >
+        {{ csrfField() }}
+
+        <!-- Basic Information Section -->
+        <div class="space-y-6">
+          <h2 class="text-lg font-semibold text-[#0f4a34]">Informasi Dasar</h2>
+
+          <!-- Plant Name -->
+          <div>
+            <label for="name" class="block text-sm font-semibold text-[#0f4a34]">Plant Name *</label>
+            <input type="text" 
+                   id="name" 
+                   name="name" 
+                   value="{{ plant?.name || '' }}" 
+                   placeholder="e.g., Tomat, Padi, Jagung"
+                   required
+                   class="mt-2 w-full rounded-xl border border-[#dbe3d7] bg-white px-4 py-3 text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+          </div>
+
+          <!-- Short Name & Category -->
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label for="shortName" class="block text-sm font-semibold text-[#0f4a34]">Short Name</label>
+              <input type="text" 
+                     id="shortName" 
+                     name="shortName" 
+                     value="{{ plant?.shortName || '' }}" 
+                     placeholder="e.g., Tm, Pd"
+                     maxlength="5"
+                     class="mt-2 w-full rounded-xl border border-[#dbe3d7] bg-white px-4 py-3 text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+            </div>
+
+            <div>
+              <label for="category" class="block text-sm font-semibold text-[#0f4a34]">Category *</label>
+              <input type="text" 
+                     id="category" 
+                     name="category" 
+                     value="{{ plant?.category || '' }}" 
+                     placeholder="e.g., Tanaman pangan, Hortikultura"
+                     required
+                     class="mt-2 w-full rounded-xl border border-[#dbe3d7] bg-white px-4 py-3 text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="description" class="block text-sm font-semibold text-[#0f4a34]">Description *</label>
+            <textarea id="description" 
+                      name="description" 
+                      rows="4"
+                      placeholder="Describe the plant, its characteristics, and growing conditions..."
+                      required
+                      class="mt-2 w-full rounded-xl border border-[#dbe3d7] bg-white px-4 py-3 text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">{{ plant?.description || '' }}</textarea>
+          </div>
+
+          <!-- Image Upload -->
+          <div>
+            <label for="image" class="block text-sm font-semibold text-[#0f4a34]">Plant Image</label>
+            <input type="file" 
+                   id="image" 
+                   name="image" 
+                   accept="image/png,image/jpeg,image/webp"
+                   class="mt-2 w-full rounded-xl border border-[#dbe3d7] bg-white px-4 py-3 text-sm text-[#0f4a34] file:mr-4 file:rounded-lg file:border-0 file:bg-[#edf5ea] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#14573e] hover:file:bg-[#3FAB5E]/20 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+            <p class="mt-1 text-xs text-[#6a7b70]">Upload JPG, PNG, atau WEBP dari laptop. Maksimal 2MB.</p>
+
+            <div id="image-preview" class="mt-4 @if(!(plant && plant.image))hidden@endif">
+              <p class="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#6a7b70]">Preview</p>
+              <img
+                id="image-preview-img"
+                src="{{ plant?.image || '' }}"
+                alt="Plant image preview"
+                class="h-40 w-full rounded-xl border border-[#dbe3d7] bg-[#f8faf5] object-contain"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Care Instructions Section -->
+        <div class="space-y-6">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-[#0f4a34]">Care Instructions</h2>
+            <button type="button" 
+                    data-add-care
+                    class="inline-flex items-center gap-2 rounded-lg bg-[#edf5ea] px-3 py-2 text-sm font-semibold text-[#14573e] transition duration-200 hover:bg-[#3FAB5E]/20">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Add Item
+            </button>
+          </div>
+
+          <div id="care-items" class="space-y-4">
+            @each(item in careItems)
+              <div class="care-item flex gap-3">
+                <input type="text" 
+                       name="care_label[]" 
+                       value="{{ item.label }}"
+                       placeholder="Label (e.g., Penyiraman)"
+                       class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+                <input type="text" 
+                       name="care_value[]" 
+                       value="{{ item.value }}"
+                       placeholder="Value / Description"
+                       class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+                <button type="button" 
+                        data-remove-care
+                        class="inline-flex items-center gap-1 rounded-lg bg-red-100 px-2.5 py-2 text-sm font-semibold text-red-700 transition duration-200 hover:bg-red-200">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+            @else
+              <div class="care-item flex gap-3">
+                <input type="text" 
+                       name="care_label[]" 
+                       placeholder="Label (e.g., Penyiraman)"
+                       class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+                <input type="text" 
+                       name="care_value[]" 
+                       placeholder="Value / Description"
+                       class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+                <button type="button" 
+                        data-remove-care
+                        class="inline-flex items-center gap-1 rounded-lg bg-red-100 px-2.5 py-2 text-sm font-semibold text-red-700 transition duration-200 hover:bg-red-200">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+            @endeach
+          </div>
+        </div>
+
+        <!-- Diseases Section -->
+        <div class="space-y-6">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-[#0f4a34]">Common Diseases *</h2>
+            <button type="button" 
+                    data-add-disease
+                    class="inline-flex items-center gap-2 rounded-lg bg-[#edf5ea] px-3 py-2 text-sm font-semibold text-[#14573e] transition duration-200 hover:bg-[#3FAB5E]/20">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Add Disease
+            </button>
+          </div>
+
+          <div id="disease-items" class="space-y-4">
+            @each(disease in diseaseItems)
+              <div class="disease-item flex gap-3">
+                <input type="text" 
+                       name="disease_name[]" 
+                       value="{{ disease.name }}"
+                       placeholder="Disease name (e.g., leaf blast)"
+                       class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+                <input type="text" 
+                       name="disease_gejala[]" 
+                       value="{{ disease.gejala }}"
+                       placeholder="Symptoms / Description"
+                       class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+                <button type="button" 
+                        data-remove-disease
+                        class="inline-flex items-center gap-1 rounded-lg bg-red-100 px-2.5 py-2 text-sm font-semibold text-red-700 transition duration-200 hover:bg-red-200">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+            @else
+              <div class="disease-item flex gap-3">
+                <input type="text" 
+                       name="disease_name[]" 
+                       placeholder="Disease name (e.g., leaf blast)"
+                       class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+                <input type="text" 
+                       name="disease_gejala[]" 
+                       placeholder="Symptoms / Description"
+                       class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+                <button type="button" 
+                        data-remove-disease
+                        class="inline-flex items-center gap-1 rounded-lg bg-red-100 px-2.5 py-2 text-sm font-semibold text-red-700 transition duration-200 hover:bg-red-200">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+            @endeach
+          </div>
+        </div>
+
+        <!-- Status Message -->
+        <div id="form-status-message" class="hidden rounded-lg border px-4 py-3 text-sm font-semibold">
+          Status message
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex gap-3 border-t border-[#dbe3d7] pt-6">
+          <a href="{{ route('admin.plant_info.index') }}" 
+             class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-4 py-3 text-center text-sm font-semibold text-[#14573e] transition duration-200 hover:bg-[#f8faf5]">
+            Cancel
+          </a>
+          <button type="submit" 
+                  id="submit-btn"
+                  class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#14573e] px-4 py-3 text-center text-sm font-semibold text-white transition duration-200 hover:bg-[#0f4a34]">
+            @if(plant)
+              Update Plant
+            @else
+              Add Plant
+            @endif
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+@endslot
+
+@slot('script')
+    <script>
+      const form = document.getElementById('plant-form')
+      const submitBtn = document.getElementById('submit-btn')
+      const statusMessage = document.getElementById('form-status-message')
+      const imageInput = document.getElementById('image')
+      const imagePreview = document.getElementById('image-preview')
+      const imagePreviewImg = document.getElementById('image-preview-img')
+      const submitLabel = form.dataset.mode === 'edit' ? 'Update Plant' : 'Add Plant'
+
+      imageInput?.addEventListener('change', () => {
+        const file = imageInput.files && imageInput.files[0]
+        if (!file) {
+          return
+        }
+
+        imagePreviewImg.src = URL.createObjectURL(file)
+        imagePreview.classList.remove('hidden')
+      })
+
+      // Add care item
+      document.querySelector('[data-add-care]')?.addEventListener('click', (e) => {
+        e.preventDefault()
+        const container = document.getElementById('care-items')
+        const newItem = document.createElement('div')
+        newItem.className = 'care-item flex gap-3'
+        newItem.innerHTML = `
+          <input type="text" 
+                 name="care_label[]" 
+                 placeholder="Label (e.g., Penyiraman)"
+                 class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+          <input type="text" 
+                 name="care_value[]" 
+                 placeholder="Value / Description"
+                 class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+          <button type="button" 
+                  data-remove-care
+                  class="inline-flex items-center gap-1 rounded-lg bg-red-100 px-2.5 py-2 text-sm font-semibold text-red-700 transition duration-200 hover:bg-red-200">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        `
+        container.appendChild(newItem)
+        setupRemoveButtons()
+      })
+
+      // Add disease item
+      document.querySelector('[data-add-disease]')?.addEventListener('click', (e) => {
+        e.preventDefault()
+        const container = document.getElementById('disease-items')
+        const newItem = document.createElement('div')
+        newItem.className = 'disease-item flex gap-3'
+        newItem.innerHTML = `
+          <input type="text" 
+                 name="disease_name[]" 
+                 placeholder="Disease name (e.g., leaf blast)"
+                 class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+          <input type="text" 
+                 name="disease_gejala[]" 
+                 placeholder="Symptoms / Description"
+                 class="flex-1 rounded-lg border border-[#dbe3d7] bg-white px-3 py-2 text-sm text-[#0f4a34] placeholder-[#b1b8b1] transition duration-200 focus:border-[#14573e] focus:outline-none focus:ring-2 focus:ring-[#14573e]/10">
+          <button type="button" 
+                  data-remove-disease
+                  class="inline-flex items-center gap-1 rounded-lg bg-red-100 px-2.5 py-2 text-sm font-semibold text-red-700 transition duration-200 hover:bg-red-200">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        `
+        container.appendChild(newItem)
+        setupRemoveButtons()
+      })
+
+      // Setup remove buttons
+      function setupRemoveButtons() {
+        document.querySelectorAll('[data-remove-care]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault()
+            btn.closest('.care-item').remove()
+          })
+        })
+
+        document.querySelectorAll('[data-remove-disease]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault()
+            btn.closest('.disease-item').remove()
+          })
+        })
+      }
+
+      setupRemoveButtons()
+
+      // Form submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        const completedDiseases = Array.from(document.querySelectorAll('.disease-item')).filter((item) => {
+          const name = item.querySelector('[name="disease_name[]"]')?.value.trim()
+          const gejala = item.querySelector('[name="disease_gejala[]"]')?.value.trim()
+          return name && gejala
+        })
+
+        if (completedDiseases.length === 0) {
+          showStatus('Isi minimal satu nama penyakit dan gejalanya.', 'error')
+          return
+        }
+
+        // Show loading state
+        submitBtn.disabled = true
+        submitBtn.innerHTML = '<svg class="h-4 w-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Saving...'
+
+        try {
+          const formData = new FormData(form)
+          const isEditMode = form.dataset.mode === 'edit'
+          const url = isEditMode ? form.dataset.updateUrl : form.dataset.storeUrl
+          const method = isEditMode ? 'PUT' : 'POST'
+
+          if (!url) {
+            throw new Error('Form action URL is missing')
+          }
+
+          const response = await fetch(url, {
+            method,
+            body: formData,
+            headers: {
+              'Accept': 'application/json',
+            }
+          })
+
+          const contentType = response.headers.get('content-type') || ''
+          const data = contentType.includes('application/json')
+            ? await response.json()
+            : { success: false, message: await response.text() }
+
+          if (data.success) {
+            showStatus(data.message || 'Saved successfully!', 'success')
+            setTimeout(() => {
+              window.location.href = `{{ route('admin.plant_info.index') }}`
+            }, 1500)
+          } else {
+            showStatus(data.error || data.message || `Failed to save (${response.status})`, 'error')
+            submitBtn.disabled = false
+            submitBtn.innerHTML = submitLabel
+          }
+        } catch (error) {
+          showStatus('Error: ' + error.message, 'error')
+          submitBtn.disabled = false
+          submitBtn.innerHTML = submitLabel
+        }
+      })
+
+      function showStatus(message, type) {
+        statusMessage.textContent = message
+        statusMessage.className = `rounded-lg border px-4 py-3 text-sm font-semibold ${
+          type === 'success'
+            ? 'border-green-200 bg-green-50 text-green-700'
+            : 'border-red-200 bg-red-50 text-red-700'
+        }`
+        statusMessage.classList.remove('hidden')
+        statusMessage.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    </script>
+@endslot
+@end

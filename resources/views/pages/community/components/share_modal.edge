@@ -1,0 +1,73 @@
+<div id="share-modal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/50 px-4 py-6">
+  <div class="mx-auto w-full max-w-2xl overflow-hidden rounded-[28px] border border-[#dbe3d7] bg-white shadow-[0_24px_70px_rgba(15,74,52,0.18)]">
+    <div class="border-b border-[#edf1ea] bg-[linear-gradient(135deg,#edf7ea_0%,#ffffff_55%,#f8fbf7_100%)] px-5 py-5 sm:px-6">
+      <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Share ke Komunitas</p>
+      <h2 class="mt-1 text-2xl font-bold text-[#0f4a34]">Tulis konteks sebelum publish</h2>
+    </div>
+
+    <form method="POST" action="{{ route('community.publish') }}" class="space-y-4 px-5 py-5 sm:px-6">
+      {{ csrfField() }}
+      <input type="hidden" name="detection_result_id" id="share-detection-id" />
+      <div>
+        <label class="block text-sm font-medium text-[#355044]">Judul</label>
+        <input name="title" class="mt-1 w-full rounded-2xl border border-[#dbe3d7] bg-white px-3 py-2.5 text-sm text-[#355044] outline-none transition duration-200 placeholder:text-gray-400 focus:border-[#3FAB5E] focus:ring-2 focus:ring-[#3FAB5E]/20" required />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-[#355044]">Diskusi</label>
+        <textarea name="body" rows="5" class="mt-1 w-full rounded-2xl border border-[#dbe3d7] bg-white px-3 py-2.5 text-sm text-[#355044] outline-none transition duration-200 placeholder:text-gray-400 focus:border-[#3FAB5E] focus:ring-2 focus:ring-[#3FAB5E]/20" required></textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-[#355044]">Tipe diskusi</label>
+        <select name="discussion_type" class="mt-1 w-full rounded-2xl border border-[#dbe3d7] bg-white px-3 py-2.5 text-sm text-[#355044] outline-none transition duration-200 focus:border-[#3FAB5E] focus:ring-2 focus:ring-[#3FAB5E]/20" required>
+          <option>Need Help</option>
+          <option>Want Confirmation</option>
+          <option>Sharing Experience</option>
+          <option>Warning Others</option>
+        </select>
+      </div>
+      <div class="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end">
+        <button type="button" id="share-cancel" class="inline-flex items-center justify-center rounded-xl border border-[#cfe0d0] bg-white px-4 py-2.5 text-sm font-semibold text-[#4d6056] transition duration-200 hover:bg-[#f4faf5]">Batal</button>
+        <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-[#14573e] px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-[#0f4a34]">Publikasikan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('share-modal')
+  const detectionInput = document.getElementById('share-detection-id')
+
+  document.getElementById('share-detection')?.addEventListener('click', () => {
+    if (detectionInput) detectionInput.value = ''
+    modal?.classList.add('flex')
+    modal?.classList.remove('hidden')
+  })
+
+  document.querySelectorAll('.share-trigger').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      const trigger = event.currentTarget
+      const detectionId = trigger?.getAttribute('data-detection-id')
+      if (detectionInput && detectionId) detectionInput.value = detectionId
+      modal?.classList.add('flex')
+      modal?.classList.remove('hidden')
+    })
+  })
+
+  document.getElementById('share-cancel')?.addEventListener('click', () => {
+    modal?.classList.remove('flex')
+    modal?.classList.add('hidden')
+  })
+
+  try {
+    const url = new URL(window.location.href)
+    const openShare = url.searchParams.get('open_share')
+    const detectionId = url.searchParams.get('share_detection_id')
+    if (openShare === '1') {
+      if (detectionInput && detectionId) detectionInput.value = detectionId
+      modal?.classList.add('flex')
+      modal?.classList.remove('hidden')
+    }
+  } catch (e) {
+    // no-op
+  }
+</script>

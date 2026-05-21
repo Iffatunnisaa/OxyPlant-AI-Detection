@@ -1,1 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
+
+:root {
+	--ox-bg: #f6f4ee;
+	--ox-surface: #f7f6f0;
+	--ox-brand-900: #0f4a34;
+	--ox-brand-800: #14573e;
+	--ox-brand-700: #1f6a4e;
+	--ox-text-900: #153e2e;
+	--ox-text-700: #385746;
+	--ox-border-soft: rgba(15, 74, 52, 0.12);
+	--ox-shadow-soft: 0 10px 30px rgba(15, 74, 52, 0.12);
+	--ox-radius-lg: 14px;
+}
+
+body {
+	font-family: 'Manrope', 'Segoe UI', sans-serif;
+	background-color: var(--ox-bg);
+	color: var(--ox-text-900);
+}
+
+a {
+	text-decoration: none;
+}
+
+.card-surface {
+	background: var(--ox-surface);
+	border: 1px solid var(--ox-border-soft);
+	border-radius: var(--ox-radius-lg);
+	box-shadow: var(--ox-shadow-soft);
+}
+
+.btn-brand {
+	background: var(--ox-brand-800);
+	color: #f1f0e9;
+	transition: background-color 180ms ease;
+}
+
+.btn-brand:hover {
+	background: var(--ox-brand-900);
+}
+
+#main-nav.site-nav {
+	border-bottom: 1px solid rgba(15, 74, 52, 0.08);
+}
+
+#main-nav.site-nav .nav-brand,
+#main-nav.site-nav .nav-link,
+#main-nav.site-nav .nav-mobile-button,
+#main-nav.site-nav .nav-profile {
+	color: var(--ox-brand-900);
+}
+
+#main-nav.site-nav .nav-link,
+#main-nav.site-nav .nav-profile {
+	font-weight: 500;
+}
+
+#main-nav.site-nav .nav-link:hover,
+#main-nav.site-nav .nav-profile:hover,
+#main-nav.site-nav .nav-mobile-button:hover {
+	color: var(--ox-brand-700);
+}
+
+#main-nav.site-nav #mobile-menu {
+	background: rgba(242, 241, 235, 0.98);
+	border-top: 1px solid rgba(15, 74, 52, 0.08);
+}

@@ -1,136 +1,251 @@
-@layout.app({ title: "About | OxyPlant" })
+@layout.app({ title: "Tentang | OxyPlant" })
   @slot('style')
     <style>
-      .bg-about {
-        background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
-                        url('/resources/img/bg_about.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+      .about-orb {
+        filter: blur(60px);
+        opacity: 0.45;
+      }
+
+      .about-feature-card {
+        transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
+      }
+
+      .about-feature-card:hover {
+        transform: translateY(-6px) scale(1.01);
+        box-shadow: 0 18px 32px rgba(10, 84, 54, 0.16);
+        border-color: rgba(20, 87, 62, 0.28);
+        background-color: #fdfefd;
       }
     </style>
   @endslot
+
   @slot('main')
-    <!-- Header Section with Image in Bottom Right -->
-    <header class="bg-[#F2F1EB] py-12 relative min-h-[450px] overflow-hidden">
-      <!-- Text Content -->
-      <div class="max-w-6xl mx-auto h-full flex flex-col justify-center pt-20 pb-28">
-        <h1 class="text-4xl font-bold text-[#0A5436]">
-          Apa itu OxyPlant
-        </h1>
-        <p class="mt-4 text-gray-600 max-w-lg">
-          Saran berkebun cerdas untuk para pekebun yang cerdas!
-        </p>
-      </div>
+    <main class="bg-[#f6f4ee] text-[#173428]">
 
-      <!-- Image positioned at bottom right -->
-      <div class="absolute bottom-2 right-72 w-[380px] md:w-[680px]">
-        <img src="/resources/img/abt.png" alt="Plant Illustration" class="w-full h-auto object-contain" />
-      </div>
-    </header>
+      <!-- Hero Section -->
+      <section class="relative overflow-hidden bg-linear-to-br from-[#e5f0df] via-[#f5f8f2] to-[#dcebd8]">
+        <div class="about-orb absolute -left-16 top-8 h-52 w-52 rounded-full bg-[#9ec6a3]"></div>
+        <div class="about-orb absolute -right-12 top-14 h-60 w-60 rounded-full bg-[#b9d8bb]"></div>
+        <div class="about-orb absolute bottom-6 left-1/2 h-44 w-44 -translate-x-1/2 rounded-full bg-[#d7e7d3]"></div>
 
-    <!-- Card About -->
-    <div class="bg-about bg-cover bg-center text-white py-12 md:py-20 px-4 md:px-8">
-      <div class="max-w-4xl mx-auto">
-        <!-- Card dengan transparansi -->
-        <div class="bg-[#AFC8AD]/30 backdrop-blur-md rounded-xl shadow-xl p-8 md:p-12 border border-white/20">
-          <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 text-center">
-            OxyPlant
-          </h2>
-          <p class="text-lg md:text-lg leading-relaxed text-center">
-            OxyPlant adalah platform digital yang membantu pecinta tanaman dalam merawat dan mengelola tanaman dengan lebih mudah. Pengguna dapat menemukan informasi lengkap tentang berbagai jenis tanaman, termasuk kebutuhan tumbuh dan tips perawatan. Selain itu, OxyPlant dilengkapi fitur manajemen taman serta komunitas untuk berbagi pengalaman berkebun. Dengan OxyPlant, merawat tanaman menjadi lebih praktis dan menyenangkan!
+        <div class="relative mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 md:py-24 lg:px-8">
+          <div class="mx-auto max-w-3xl">
+            <div class="inline-flex items-center rounded-full border border-[#c9dbca] bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#14573e] shadow-sm backdrop-blur">
+              Tentang OxyPlant
+            </div>
+
+            <h1 class="mt-6 text-4xl font-bold leading-tight text-[#0f4a34] md:text-5xl">
+              Platform cerdas untuk monitoring penyakit tanaman dan perawatan berbasis data.
+            </h1>
+
+            <p class="mt-6 text-lg leading-relaxed text-gray-600 md:text-xl">
+              OxyPlant menggabungkan AI detection, manajemen kebun, dan referensi budidaya dalam satu pengalaman yang sederhana agar pengguna bisa mengambil keputusan perawatan lebih cepat dan tepat.
+            </p>
+
+            <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <a href="{{ route('plant_info.index') }}" class="inline-flex items-center justify-center rounded-xl bg-[#14573e] px-6 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:-translate-y-1 hover:bg-[#0f4a34] hover:shadow-lg">
+                Lihat Info Tanaman
+              </a>
+              <a href="{{ route('garden_manager.index') }}" class="inline-flex items-center justify-center rounded-xl border border-[#c9dbca] bg-white px-6 py-3 text-sm font-semibold text-[#14573e] shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
+                Buka Garden Manager
+              </a>
+            </div>
+          </div>
+
+          <div class="mx-auto mt-12 max-w-4xl rounded-2xl border border-white/70 bg-white/75 p-4 shadow-sm backdrop-blur-sm sm:p-6">
+            <div class="grid gap-3 text-left sm:grid-cols-3">
+              <div class="rounded-xl border border-[#dbe3d7] bg-white/80 p-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Fokus Utama</p>
+                <p class="mt-2 text-sm font-semibold text-[#14573e]">Kecerdasan Penyakit</p>
+              </div>
+              <div class="rounded-xl border border-[#dbe3d7] bg-white/80 p-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Tipe Sistem</p>
+                <p class="mt-2 text-sm font-semibold text-[#14573e]">Pertanian Cerdas Web</p>
+              </div>
+              <div class="rounded-xl border border-[#dbe3d7] bg-white/80 p-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Hasil</p>
+                <p class="mt-2 text-sm font-semibold text-[#14573e]">Rekomendasi Aksi</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Mission Section -->
+      <section class="py-16 md:py-20">
+        <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#14573e]">Misi Kami</p>
+            <h2 class="mt-3 text-3xl font-bold text-[#0f4a34] md:text-4xl">Meningkatkan ketahanan tanaman melalui pemantauan dini dan rekomendasi cerdas.</h2>
+            <p class="mt-5 text-base leading-relaxed text-gray-600">
+              OxyPlant hadir untuk menjembatani proses dari gejala di lapangan menjadi tindakan perawatan yang bisa segera dilakukan oleh pengguna. Melalui integrasi monitoring, informasi tanaman, dan deteksi berbasis AI, pengguna mendapatkan alur yang lebih jelas dari observasi hingga keputusan.
+            </p>
+            <p class="mt-4 text-base leading-relaxed text-gray-600">
+              Pendekatan ini membantu mendorong kebiasaan perawatan yang konsisten, mengurangi keterlambatan penanganan penyakit, serta memperkuat kualitas pengelolaan kebun secara berkelanjutan.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <article class="rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm">
+              <h3 class="text-lg font-bold text-[#14573e]">Tujuan Sistem</h3>
+              <p class="mt-2 text-sm leading-relaxed text-gray-600">
+                Menghadirkan platform terpadu untuk memonitor kondisi tanaman, mendokumentasikan aktivitas perawatan, dan memandu pengguna dalam tindakan preventif.
+              </p>
+            </article>
+
+            <article class="rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm">
+              <h3 class="text-lg font-bold text-[#14573e]">Mengapa Monitoring Penyakit Lebih Awal</h3>
+              <p class="mt-2 text-sm leading-relaxed text-gray-600">
+                Deteksi lebih awal membantu menekan risiko penyebaran penyakit, mengurangi kerusakan tanaman, serta mendukung produktivitas kebun yang lebih stabil.
+              </p>
+            </article>
+
+            <article class="rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm">
+              <h3 class="text-lg font-bold text-[#14573e]">Manfaat Platform</h3>
+              <p class="mt-2 text-sm leading-relaxed text-gray-600">
+                Pengguna mendapatkan alur kerja yang efisien: mulai dari identifikasi gejala, pemahaman penyakit, hingga pengelolaan perawatan harian berbasis data.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Features Section -->
+      <section class="bg-[#e3eddc] py-16 md:py-20">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-3xl mx-auto">
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#14573e]">Key Features</p>
+            <h2 class="mt-3 text-3xl font-bold text-[#0f4a34] md:text-4xl">Fitur utama untuk pengalaman smart agriculture end-to-end.</h2>
+          </div>
+
+          <div class="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
+            <article class="about-feature-card rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e8f2e6] text-[#14573e]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.75 3.104v5.714a2.143 2.143 0 01-2.143 2.143H3.322m6.428-7.857a2.143 2.143 0 00-2.143 2.143v5.714a2.143 2.143 0 002.143 2.143h5.714a2.143 2.143 0 002.143-2.143V5.247a2.143 2.143 0 00-2.143-2.143H9.75z" />
+                </svg>
+              </div>
+              <h3 class="mt-4 text-base font-bold text-[#14573e]">Disease Detection</h3>
+              <p class="mt-2 text-sm leading-relaxed text-gray-600">Analisis gejala penyakit tanaman melalui inferensi model ML berbasis citra daun.</p>
+            </article>
+
+            <article class="about-feature-card rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e8f2e6] text-[#14573e]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 7h18M5 7l1.5 12h11L19 7M9 11v5m6-5v5M10 7V5a2 2 0 114 0v2" />
+                </svg>
+              </div>
+              <h3 class="mt-4 text-base font-bold text-[#14573e]">Plant Monitoring</h3>
+              <p class="mt-2 text-sm leading-relaxed text-gray-600">Pencatatan kondisi tanaman secara berkala untuk memantau perubahan dari waktu ke waktu.</p>
+            </article>
+
+            <article class="about-feature-card rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e8f2e6] text-[#14573e]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 class="mt-4 text-base font-bold text-[#14573e]">Smart Recommendations</h3>
+              <p class="mt-2 text-sm leading-relaxed text-gray-600">Saran tindakan berbasis hasil deteksi untuk membantu keputusan perawatan yang tepat.</p>
+            </article>
+
+            <article class="about-feature-card rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e8f2e6] text-[#14573e]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10m-11 9h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v11a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 class="mt-4 text-base font-bold text-[#14573e]">Garden Management</h3>
+              <p class="mt-2 text-sm leading-relaxed text-gray-600">Kelola jadwal penyiraman, tindakan perawatan, dan riwayat aktivitas dalam satu dashboard.</p>
+            </article>
+
+            <article class="about-feature-card rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e8f2e6] text-[#14573e]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 19V5m5 14V9m5 10V13m5 6V7" />
+                </svg>
+              </div>
+              <h3 class="mt-4 text-base font-bold text-[#14573e]">Data Visualization</h3>
+              <p class="mt-2 text-sm leading-relaxed text-gray-600">Tampilan data ringkas untuk memudahkan evaluasi kondisi kebun dan progres tanaman.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Technology Section -->
+      <section class="py-16 md:py-20">
+        <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
+          <div class="relative overflow-hidden rounded-2xl border border-[#dbe3d7] bg-[#eef4ea] p-3 shadow-sm">
+            <img src="/resources/img/pi_about.png" alt="Plant technology support" class="h-72 w-full rounded-xl object-cover" />
+            <div class="absolute inset-x-6 bottom-6 rounded-xl border border-white/50 bg-white/85 p-4 shadow-sm backdrop-blur-sm">
+              <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Technology Direction</p>
+              <p class="mt-1 text-sm font-semibold text-[#14573e]">Reliable AI inference, fast backend API, and clear frontend presentation.</p>
+            </div>
+          </div>
+
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#14573e]">Technology Stack</p>
+            <h2 class="mt-3 text-3xl font-bold text-[#0f4a34] md:text-4xl">Dibangun dengan stack modern untuk performa, skalabilitas, dan maintainability.</h2>
+            <p class="mt-5 text-base leading-relaxed text-gray-600">
+              Kombinasi teknologi ini memungkinkan pengalaman yang cepat, ringan, dan dapat terus dikembangkan untuk kebutuhan riset maupun implementasi lapangan.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <span class="inline-flex items-center rounded-full border border-[#cdddcf] bg-white px-4 py-2 text-sm font-semibold text-[#14573e] shadow-sm">AdonisJS</span>
+              <span class="inline-flex items-center rounded-full border border-[#cdddcf] bg-white px-4 py-2 text-sm font-semibold text-[#14573e] shadow-sm">TailwindCSS</span>
+              <span class="inline-flex items-center rounded-full border border-[#cdddcf] bg-white px-4 py-2 text-sm font-semibold text-[#14573e] shadow-sm">FastAPI</span>
+              <span class="inline-flex items-center rounded-full border border-[#cdddcf] bg-white px-4 py-2 text-sm font-semibold text-[#14573e] shadow-sm">TensorFlow</span>
+              <span class="inline-flex items-center rounded-full border border-[#cdddcf] bg-white px-4 py-2 text-sm font-semibold text-[#14573e] shadow-sm">ML Model</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Project / Academic Context Section -->
+      <section class="bg-[#f0f4ea] py-16 md:py-20">
+        <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#14573e]">Project Context</p>
+          <h2 class="mt-3 text-3xl font-bold text-[#0f4a34] md:text-4xl">Academic Smart Agriculture Project</h2>
+          <p class="mt-5 text-base leading-relaxed text-gray-600">
+            OxyPlant dikembangkan sebagai bagian dari konteks riset/skripsi untuk mengeksplorasi penerapan machine learning dalam deteksi dini penyakit tanaman serta integrasinya dengan sistem monitoring kebun berbasis web.
           </p>
-        </div>
-      </div>
-    </div>
 
-    <!-- About konten -->
-    <!-- Garden Manager Section -->
-    <section class="bg-[#F2F1EB] py-16 px-4 md:px-8">
-      <div class="max-w-6xl mx-auto space-y-16">
-        <!-- First Content - Image Left, Text Right -->
-        <div class="flex flex-col md:flex-row gap-8 items-center">
-          <!-- Image on Left -->
-          <div class="md:w-1/2">
-            <img
-              src="/resources/img/gm_about.png"
-              alt="Garden Manager"
-              class="rounded-xl shadow-lg w-full h-auto"
-            />
-          </div>
-
-          <!-- Text on Right -->
-          <div class="md:w-1/2">
-            <h2 class="text-3xl md:text-4xl font-bold text-[#0A5436] mb-6">
-              Garden Manager
-            </h2>
-            <div class="space-y-4 text-gray-700 text-lg">
-              <p>
-                Halaman ini menyediakan alat untuk mencatat dan mengelola tanaman dengan lebih mudah. Jadwal penyiraman, pemupukan, dan pencahayaan bisa diatur agar tanaman mendapatkan perawatan yang optimal.
-              </p>
-              <p>
-                Notifikasi pengingat membantu memastikan setiap tanaman dirawat tepat waktu. Dengan tampilan yang sederhana dan fungsional, merawat tanaman menjadi lebih praktis dan efisien.
-              </p>
-              <p>
-                Setiap perubahan kondisi tanaman juga dapat dicatat, sehingga pengguna bisa melihat perkembangan dan menyesuaikan perawatan yang dibutuhkan.
-              </p>
+          <div class="mt-8 rounded-2xl border border-[#dbe3d7] bg-white p-6 text-left shadow-sm">
+            <p class="text-sm leading-relaxed text-gray-600">
+              Fokus utamanya adalah menghadirkan sistem yang dapat membantu pengguna memahami kondisi tanaman secara praktis: mengidentifikasi gejala, membaca konteks penyakit, lalu mengeksekusi langkah perawatan yang sesuai.
+            </p>
+            <div class="mt-5 flex flex-wrap gap-2">
+              <span class="rounded-full bg-[#e8f2e6] px-3 py-1 text-xs font-semibold text-[#14573e]">Research Goal</span>
+              <span class="rounded-full bg-[#e8f2e6] px-3 py-1 text-xs font-semibold text-[#14573e]">System Objective</span>
+              <span class="rounded-full bg-[#e8f2e6] px-3 py-1 text-xs font-semibold text-[#14573e]">Target Users</span>
             </div>
           </div>
         </div>
+      </section>
 
-        <!-- Second Content - Image Right, Text Left -->
-        <div class="flex flex-col md:flex-row gap-8 items-center">
-          <!-- Text on Left (order changes on mobile) -->
-          <div class="md:w-1/2 md:order-1 order-2">
-            <h2 class="text-3xl md:text-4xl font-bold text-[#0A5436] mb-6">
-              Plant Care
-            </h2>
-            <div class="space-y-4 text-gray-700 text-lg">
-              <p>
-                Bagian ini berisi panduan lengkap untuk merawat berbagai jenis tanaman dengan cara yang benar. Informasi tentang kebutuhan air, sinar matahari, pupuk, serta cara menangani hama dan penyakit tersedia dalam format yang mudah dipahami.
-              </p>
-              <p>
-                Setiap tanaman memiliki kebutuhan spesifik, dan halaman ini membantu menemukan metode perawatan yang sesuai. Dengan referensi yang akurat, tanaman bisa tumbuh lebih sehat dan subur.
-              </p>
-            </div>
-          </div>
+      <!-- CTA Section -->
+      <section class="bg-[#0f4a34] py-16 md:py-20">
+        <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-green-200">Get Started with OxyPlant</p>
+          <h2 class="mx-auto mt-3 max-w-3xl text-3xl font-bold leading-tight text-white md:text-4xl">Jelajahi informasi tanaman, kelola kebun, dan gunakan deteksi penyakit AI.</h2>
+          <p class="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-green-100/90">
+            Pilih alur yang Anda butuhkan: pelajari karakteristik tanaman di Plant Info, monitor aktivitas di Garden Manager, lalu validasi gejala untuk langkah perawatan yang lebih tepat.
+          </p>
 
-          <!-- Image on Right -->
-          <div class="md:w-1/2 md:order-2 order-1">
-            <img src="/resources/img/pc_about.png" alt="Plant Care" class="rounded-xl shadow-lg w-full h-auto" />
-          </div>
-        </div>
-
-        <!-- First Content - Image Left, Text Right -->
-        <div class="flex flex-col md:flex-row gap-8 items-center">
-          <!-- Image on Left -->
-          <div class="md:w-1/2">
-            <img
-              src="/resources/img/pi_about.png"
-              alt="Plant Information"
-              class="rounded-xl shadow-lg w-full h-auto"
-            />
-          </div>
-
-          <!-- Text on Right -->
-          <div class="md:w-1/2">
-            <h2 class="text-3xl md:text-4xl font-bold text-[#0A5436] mb-6">
-              Plant Information
-            </h2>
-            <div class="space-y-4 text-gray-700 text-lg">
-              <p>
-                Halaman ini memuat informasi mendetail tentang berbagai jenis tanaman, mulai dari deskripsi, habitat alami, hingga cara perawatannya. Pencarian bisa dilakukan berdasarkan kategori atau kebutuhan spesifik tanaman.
-              </p>
-              <p>
-                Dengan akses cepat ke informasi yang dibutuhkan, memilih dan merawat tanaman menjadi lebih sederhana. Tidak perlu lagi menebak-nebak cara terbaik untuk menjaga tanaman tetap sehat. Informasi ini terus diperbarui dengan data terbaru,
-              </p>
-              <p>
-                memastikan setiap pengguna mendapatkan panduan yang paling relevan. Dengan berbagai tips dan fakta menarik tentang tanaman, halaman ini juga cocok bagi mereka yang ingin memperluas wawasan di dunia botani.
-              </p>
-            </div>
+          <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <a href="{{ route('plant_info.index') }}" class="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-semibold text-[#14573e] shadow-sm transition duration-200 hover:-translate-y-1 hover:bg-[#f2f7ef] hover:shadow-lg">
+              Explore Plant Info
+            </a>
+            <a href="{{ route('garden_manager.index') }}" class="inline-flex items-center justify-center rounded-xl border border-white/30 px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:-translate-y-1 hover:bg-white/10 hover:shadow-lg">
+              Open Garden Manager
+            </a>
+            <a href="{{ route('about') }}" class="inline-flex items-center justify-center rounded-xl border border-white/30 px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:-translate-y-1 hover:bg-white/10 hover:shadow-lg">
+              Learn More About Project
+            </a>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+    </main>
   @endslot
 @end

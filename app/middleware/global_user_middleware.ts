@@ -11,15 +11,25 @@ export default class GlobalUserMiddleware {
     if (token) {
       try {
         const payload = jwt.verify(token, env.get('JWT_SECRET')) as { id: string }
-        user = await User.findById(payload.id).lean()
+        const userDoc = await User.findById(payload.id).lean()
+
+        if (userDoc) {
+          user = {
+            ...userDoc,
+            id: String(userDoc._id),
+          }
+        }
       } catch {
         user = null
       }
     }
 
-    // Share user (null if not logged in) with all views
-    view.share({ user })
-    
+    view.share({
+      user,
+      isAuthenticated: !!user,
+      isAdmin: user?.role === 'admin',
+    })
+
     await next()
   }
 }

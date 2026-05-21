@@ -1,0 +1,34 @@
+{
+  "jagung": [
+    "cercospora leaf spot gray",
+    "common rust",
+    "healthy",
+    "northern leaf bight"
+  ],
+  "tomat": [
+    "bacterial leaf spot",
+    "early blight",
+    "healthy",
+    "late blight",
+    "leaf mold",
+    "mosaic virus",
+    "septoria spot",
+    "yellow leaf curl"
+  ],
+  "padi": [
+    "bacterial leaf blight",
+    "brown spot",
+    "healthy",
+    "leaf blast"
+  ],
+  "cabai": [
+    "bacterial leaf spot",
+    "healthy",
+    "yellow leaf curl"
+  ],
+  "kentang": [
+    "early blight",
+    "healthy",
+    "late blight"
+  ]
+}

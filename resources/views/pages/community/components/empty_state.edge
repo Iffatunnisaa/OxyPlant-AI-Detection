@@ -1,0 +1,11 @@
+<div class="rounded-3xl border border-dashed border-[#cfd8cd] bg-[#fbfcfa] p-8 text-center text-[#5e6d63] sm:p-10">
+  @if(!type || type == 'no_posts')
+    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e8f1e5] text-[#14573e]">
+      <i class="fas fa-seedling text-xl"></i>
+    </div>
+    <h3 class="mt-4 text-lg font-semibold text-[#0f4a34]">Belum ada postingan komunitas</h3>
+    <p class="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-[#6a7b70]">Ketika pengguna membagikan kasus, postingan akan muncul di sini. Kamu juga bisa mulai membagikan hasil deteksimu.</p>
+  @else
+    <p class="text-sm">Tidak ada data.</p>
+  @endif
+</div>

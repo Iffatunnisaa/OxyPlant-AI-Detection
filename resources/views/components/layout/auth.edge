@@ -6,18 +6,16 @@
     <title>
       {{ title || "OxyPlant" }}
     </title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @if ($slots.meta)
       {{{ await $slots.meta() }}}
     @endif
-    <script src="https://cdn.tailwindcss.com">
-      
-    </script>
 
     @if ($slots.style)
       {{{ await $slots.style() }}}
     @endif
   </head>
-  <body class="min-h-screen overflow-x-hidden">
+  <body class="min-h-screen overflow-x-hidden bg-[#f6f4ee] text-[#153e2e]">
     {{{ await $slots.body() }}}
     @if ($slots.script)
       {{{ await $slots.script() }}}

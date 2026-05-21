@@ -1,0 +1,535 @@
+@layout.app({ title: "Garden Manager | OxyPlant" })
+  @slot('main')
+    <section class="bg-[#f4f7f1] pb-16 pt-10 md:pb-24 md:pt-14">
+      <div class="mx-auto grid max-w-6xl gap-6 px-6 lg:grid-cols-2 lg:items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[#14573e]">Smart Garden Dashboard</p>
+          <h1 class="mt-3 text-4xl font-bold leading-tight text-[#0A5436] md:text-5xl">
+            Pantau & Lindungi Tanaman Anda
+          </h1>
+          <p class="mt-4 max-w-xl text-base leading-relaxed text-[#4d6056] md:text-lg">
+            Pantau kesehatan tanaman Anda setiap hari, dapatkan insight cepat, dan lakukan deteksi penyakit berbasis AI dalam satu dashboard.
+          </p>
+
+        </div>
+
+        <div class="relative overflow-hidden rounded-3xl border border-[#dbe3d7] bg-white p-6 shadow-sm md:p-7">
+          <img src="/resources/img/gm_bg.png" alt="Plant monitoring" class="h-64 w-full rounded-2xl object-cover" />
+        </div>
+      </div>
+
+      <div class="mx-auto mt-8 grid max-w-6xl grid-cols-1 gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Total Tanaman</p>
+          <p class="mt-3 text-3xl font-bold text-[#0A5436]">{{ dashboardStats.totalPlants }}</p>
+        </div>
+        <div class="rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Tanaman Sehat</p>
+          <p class="mt-3 text-3xl font-bold text-[#1f8c4d]">{{ dashboardStats.healthyPlants }}</p>
+        </div>
+        <div class="rounded-2xl border border-[#dbe3d7] bg-white p-5 shadow-sm">
+          <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Butuh Perhatian</p>
+          <p class="mt-3 text-3xl font-bold text-[#d2851f]">{{ dashboardStats.needAttention }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Scan Modal -->
+    <div id="scanModalOverlay" class="fixed inset-0 z-40 hidden bg-black/60"></div>
+    <div id="scanModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+      <div class="w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl border border-[#dbe3d7] bg-white p-6 shadow-2xl md:p-8">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">AI Disease Detection</p>
+            <h3 class="mt-1 text-2xl font-bold text-[#0A5436]">Pindai Penyakit</h3>
+            <p id="scanPlantLabel" class="mt-1 text-sm text-[#4d6056]"></p>
+          </div>
+          <button id="scanCloseBtn" type="button" class="rounded-full border border-[#dbe3d7] px-3 py-1 text-sm font-semibold text-[#14573e] hover:bg-[#f4f7f1]">
+            Tutup
+          </button>
+        </div>
+
+        <input type="hidden" id="scanPlantId" />
+
+        <div class="mt-5 rounded-xl border-2 border-dashed border-[#c8d8c2] bg-[#f8fbf6] p-5">
+          <label for="scanImageInput" class="block cursor-pointer text-center">
+            <span class="text-sm font-semibold text-[#14573e]">Klik untuk pilih gambar daun</span>
+            <p class="mt-1 text-xs text-[#6a7b70]">Format JPG/PNG, maksimal 5MB</p>
+          </label>
+          <input id="scanImageInput" type="file" accept="image/png,image/jpeg" class="hidden" />
+
+          <div id="scanPreviewWrap" class="mt-4 hidden">
+            <img id="scanPreviewImg" src="" alt="Preview scan" class="mx-auto h-44 w-full rounded-lg object-contain bg-white" />
+          </div>
+        </div>
+
+        <div class="mt-4 flex flex-wrap gap-3">
+          <button id="scanAnalyzeBtn" type="button" class="rounded-full bg-[#3FAB5E] px-5 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-[#368F4F] disabled:cursor-not-allowed disabled:opacity-60" disabled>
+            Analyze
+          </button>
+          <button id="scanResetBtn" type="button" class="rounded-full border border-[#dbe3d7] bg-white px-5 py-2.5 text-sm font-semibold text-[#14573e] transition duration-200 hover:bg-[#f4f7f1]">
+            Reset
+          </button>
+        </div>
+
+        <div id="scanLoading" class="mt-5 hidden rounded-xl border border-[#dbe3d7] bg-[#f8fbf6] p-4">
+          <p class="text-sm font-semibold text-[#14573e]">Menganalisis gambar...</p>
+          <p class="mt-1 text-xs text-[#6a7b70]">Mohon tunggu, request sedang diproses oleh backend AI.</p>
+        </div>
+
+        <div id="scanResult" class="mt-5 hidden rounded-xl border border-[#dbe3d7] bg-[#f8fbf6] p-4">
+          <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">Hasil Deteksi</p>
+          <div class="mt-2 grid gap-2 sm:grid-cols-2">
+            <p class="text-sm text-[#14573e]"><span class="font-semibold">Tanaman:</span> <span id="scanResultPlant">-</span></p>
+            <p class="text-sm text-[#14573e]"><span class="font-semibold">Penyakit:</span> <span id="scanResultDisease">-</span></p>
+            <p class="text-sm text-[#14573e]"><span class="font-semibold">Confidence:</span> <span id="scanResultConfidence">-</span></p>
+            <p class="text-sm text-[#14573e]"><span class="font-semibold">ID Deteksi:</span> <span id="scanResultId">-</span></p>
+          </div>
+        </div>
+
+        <div id="scanShareCta" class="mt-4 hidden rounded-xl border border-[#b8d9c1] bg-[#eef8ef] p-4">
+          <p class="text-sm font-semibold text-[#14573e]">Bagikan hasil ini ke komunitas?</p>
+          <p class="mt-1 text-xs text-[#5e6d63]">
+            Hasil deteksi tetap privat di Garden Manager sampai kamu memberi persetujuan untuk publish.
+          </p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <a
+              id="scanShareNow"
+              href="{{ route('community.index') }}"
+              class="inline-flex items-center rounded-lg bg-[#14573e] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0f4a34]"
+            >
+              Ya, lanjut tulis postingan
+            </a>
+            <button
+              id="scanShareLater"
+              type="button"
+              class="inline-flex items-center rounded-lg border border-[#cfe0d0] bg-white px-4 py-2 text-sm font-semibold text-[#4d6056] hover:bg-[#f7faf5]"
+            >
+              Nanti saja
+            </button>
+          </div>
+        </div>
+
+        <div id="scanDssRecommendation" class="mt-4 hidden rounded-xl border border-[#dbe3d7] bg-white p-4">
+          <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#6a7b70]">DSS Recommendation</p>
+          <div id="scanDssRecommendationBody" class="mt-3 text-sm text-[#4d6056]"></div>
+        </div>
+      </div>
+    </div>
+
+    <section id="garden-grid" class="bg-[#cfe0cb] py-12 md:py-16">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="mb-8 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-2xl font-bold text-[#0A5436] md:text-3xl">Monitor Tanaman Saya</h2>
+            <p class="mt-2 text-sm text-[#4d6056]">Pantau status dan jalankan tindakan cepat untuk setiap tanaman.</p>
+          </div>
+          <a href="{{ route('garden_manager.add') }}" class="inline-flex items-center gap-2 rounded-full bg-[#3FAB5E] px-5 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-[#368F4F]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Add Plant
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+          @each(card in plantCards)
+            @!component('components/garden/plant_card', { card: card })
+          @else
+            <div class="col-span-full rounded-3xl border-2 border-dashed border-[#b7ccb5] bg-white p-10 text-center shadow-sm md:p-14">
+              <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#e8f1e5] text-[#3FAB5E]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6v6m0 0v6m0-6h6m0 0h6m0 0v6m0 0v6m0-6h-6m0 0h-6" />
+                </svg>
+              </div>
+              <h3 class="mt-5 text-2xl font-bold text-[#0A5436]">Start your smart garden</h3>
+              <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[#6a7b70]">
+                Tambahkan tanaman pertama Anda untuk mulai monitoring, perawatan rutin, dan deteksi penyakit berbasis AI.
+              </p>
+              <a href="{{ route('garden_manager.add') }}" class="mt-6 inline-flex items-center gap-2 rounded-full bg-[#3FAB5E] px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-[#368F4F]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                Add Your First Plant
+              </a>
+            </div>
+          @endeach
+        </div>
+      </div>
+    </section>
+
+    {{-- Modal to confirm water/pesticide/harvest a plant --}}
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black/60 z-40 hidden"></div>
+    <!-- Modal -->
+    <div id="confirmModal" class="fixed inset-0 items-center justify-center z-50 hidden">
+      <form method="POST" action="{{ route('garden_manager.action') }}" class="bg-white rounded-2xl shadow-2xl p-8 max-w-xl w-full relative">
+      {{ csrfField() }}
+      <input type="hidden" name="plant_id" id="modalPlantId" />
+      <input type="hidden" name="action" id="modalAction" />
+      <!-- Big Action Icon -->
+      <div id="modalActionIcon" class="flex justify-center mb-6">
+        <!-- Default: Water Icon, will be replaced dynamically -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-[#3FAB5E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2m0 0C7.03 7.39 4 11.28 4 15a8 8 0 0016 0c0-3.72-3.03-7.61-8-10zm0 0v2m0 0v2" />
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold mb-4 text-center">Konfirmasi Tindakan</h2>
+      <p class="mb-6 text-center">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+      <div class="mb-6 rounded-xl border border-[#dbe3d7] bg-[#f8faf5] px-4 py-3">
+        <p id="modalMessage" class="text-sm font-semibold text-[#14573e]"></p>
+        <p class="mt-1 text-xs text-[#6a7b70]">Aksi ini hanya memperbarui data tanaman di Garden Manager.</p>
+      </div>
+      <div class="flex justify-end space-x-2">
+        <button type="button" id="cancelButton" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded">
+        Batal
+        </button>
+        <button type="submit" id="confirmButton" class="bg-[#3FAB5E] hover:bg-[#368F4F] text-white font-semibold py-2 px-6 rounded">
+        Konfirmasi
+        </button>
+      </div>
+      </form>
+    </div>
+
+    <script>
+      // Modal logic with overlay and dynamic icon
+      document.addEventListener('DOMContentLoaded', function () {
+      const confirmModal = document.getElementById('confirmModal');
+      const modalOverlay = document.getElementById('modalOverlay');
+      const cancelButton = document.getElementById('cancelButton');
+      const confirmButton = document.getElementById('confirmButton');
+      const modalActionIcon = document.getElementById('modalActionIcon');
+      const modalPlantId = document.getElementById('modalPlantId');
+      const modalMessage = document.getElementById('modalMessage');
+      const modalAction = document.getElementById('modalAction');
+
+      const scanModal = document.getElementById('scanModal');
+      const scanModalOverlay = document.getElementById('scanModalOverlay');
+      const scanCloseBtn = document.getElementById('scanCloseBtn');
+      const scanImageInput = document.getElementById('scanImageInput');
+      const scanPreviewWrap = document.getElementById('scanPreviewWrap');
+      const scanPreviewImg = document.getElementById('scanPreviewImg');
+      const scanAnalyzeBtn = document.getElementById('scanAnalyzeBtn');
+      const scanResetBtn = document.getElementById('scanResetBtn');
+      const scanLoading = document.getElementById('scanLoading');
+      const scanResult = document.getElementById('scanResult');
+      const scanPlantLabel = document.getElementById('scanPlantLabel');
+      const scanPlantId = document.getElementById('scanPlantId');
+      const scanResultPlant = document.getElementById('scanResultPlant');
+      const scanResultDisease = document.getElementById('scanResultDisease');
+      const scanResultConfidence = document.getElementById('scanResultConfidence');
+      const scanResultId = document.getElementById('scanResultId');
+      const scanShareCta = document.getElementById('scanShareCta');
+      const scanShareNow = document.getElementById('scanShareNow');
+      const scanShareLater = document.getElementById('scanShareLater');
+      const scanDssRecommendation = document.getElementById('scanDssRecommendation');
+      const scanDssRecommendationBody = document.getElementById('scanDssRecommendationBody');
+
+      let selectedScanFile = null;
+
+      window.openScanDisease = function (plantId, plantName) {
+        scanPlantId.value = plantId;
+        scanPlantLabel.textContent = `Tanaman: ${plantName}`;
+        scanModal.classList.remove('hidden');
+        scanModal.classList.add('flex');
+        scanModalOverlay.classList.remove('hidden');
+      };
+
+      function closeScanModal() {
+        scanModal.classList.add('hidden');
+        scanModal.classList.remove('flex');
+        scanModalOverlay.classList.add('hidden');
+      }
+
+      function resetScanForm() {
+        selectedScanFile = null;
+        scanImageInput.value = '';
+        scanPreviewImg.src = '';
+        scanPreviewWrap.classList.add('hidden');
+        scanAnalyzeBtn.disabled = true;
+        scanLoading.classList.add('hidden');
+        scanResult.classList.add('hidden');
+        scanResultPlant.textContent = '-';
+        scanResultDisease.textContent = '-';
+        scanResultConfidence.textContent = '-';
+        scanResultId.textContent = '-';
+        scanShareCta.classList.add('hidden');
+        scanShareNow.setAttribute('href', `{{ route('community.index') }}`);
+        scanDssRecommendation.classList.add('hidden');
+        scanDssRecommendationBody.innerHTML = '';
+      }
+
+      scanShareLater.addEventListener('click', () => {
+        scanShareCta.classList.add('hidden');
+      });
+
+      function escapeHtml(value) {
+        return String(value ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function severityClasses(severity) {
+        switch (String(severity || '').toLowerCase()) {
+          case 'low':
+            return 'border-emerald-200 bg-emerald-50 text-emerald-700';
+          case 'medium':
+            return 'border-yellow-200 bg-yellow-50 text-yellow-700';
+          case 'high':
+            return 'border-amber-200 bg-amber-50 text-amber-700';
+          case 'critical':
+            return 'border-red-200 bg-red-50 text-red-700';
+          default:
+            return 'border-[#dbe3d7] bg-[#f8faf5] text-[#5e6d63]';
+        }
+      }
+
+      function listMarkup(items) {
+        if (!Array.isArray(items) || items.length === 0) {
+          return '<p class="mt-1 text-xs text-[#6a7b70]">Tidak ada rekomendasi.</p>';
+        }
+
+        return `<ul class="mt-1 list-disc pl-5 text-xs text-[#4d6056]">${items
+          .map((item) => `<li>${escapeHtml(item)}</li>`)
+          .join('')}</ul>`;
+      }
+
+      function renderDssRecommendation(data) {
+        const rec = data?.recommendation || {};
+        const severity = String(data?.severity || 'unknown').toUpperCase();
+        const severityTone = severityClasses(data?.severity);
+
+        scanDssRecommendationBody.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <p class="font-semibold text-[#14573e]">Saran tindakan berbasis DSS</p>
+            <span class="inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${severityTone}">${escapeHtml(severity)}</span>
+          </div>
+
+          <div class="mt-3 grid gap-3 md:grid-cols-3">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-[#6a7b70]">Prevention</p>
+              ${listMarkup(rec.prevention)}
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-[#6a7b70]">Treatment</p>
+              ${listMarkup(rec.treatment)}
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-[#6a7b70]">Monitoring</p>
+              ${listMarkup(rec.monitoring)}
+            </div>
+          </div>
+        `;
+        scanDssRecommendation.classList.remove('hidden');
+      }
+
+      // Update compact recommendation on the plant card so it persists after modal close
+      function updatePlantCardRecommendation(plantId, data) {
+        if (!plantId) return;
+        try {
+          const selector = `[data-recommendation-widget][data-plant-id="${plantId}"]`;
+          const node = document.querySelector(selector);
+          if (!node) return;
+
+          const prevention = (data && data.recommendation && data.recommendation.prevention) || [];
+          const first = prevention[0];
+          const esc = (s) => String(s || '');
+          const plantName = data?.prediction?.plant || node.getAttribute('data-plant') || '';
+          const diseaseName = data?.prediction?.disease || node.getAttribute('data-disease') || '';
+
+          let html = '<div class="flex items-center justify-between gap-3">';
+          if (first) {
+            html += `<p class="text-sm text-orange-900">${esc(first)}</p>`;
+          } else {
+            html += `<p class="text-sm text-orange-900">Tidak ada rekomendasi pencegahan spesifik.</p>`;
+          }
+
+          const query = new URLSearchParams({ plant: plantName, disease: diseaseName }).toString();
+          const detailsHref = plantId ? `/plant_info/?plant=${encodeURIComponent(plantId)}&disease=${encodeURIComponent(diseaseName)}` : `/plant_info/?${query}`;
+          html += `<a href="${detailsHref}" class="inline-flex items-center gap-2 rounded-md bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-800">Lihat selengkapnya →</a>`;
+          html += '</div>';
+
+          node.innerHTML = html;
+        } catch (e) {
+          // silent fail — not critical
+          console.error('updatePlantCardRecommendation error', e);
+        }
+      }
+
+      async function fetchDssRecommendation(plant, disease, confidenceRaw) {
+        scanDssRecommendationBody.innerHTML = '<p class="text-sm text-[#6a7b70]">Mengambil rekomendasi DSS...</p>';
+        scanDssRecommendation.classList.remove('hidden');
+
+        const params = new URLSearchParams({ plant: String(plant || ''), disease: String(disease || '') });
+        if (confidenceRaw !== undefined && confidenceRaw !== null && confidenceRaw !== '') {
+          params.set('confidence', String(confidenceRaw));
+        }
+
+        try {
+          const res = await fetch(`/recommendation?${params.toString()}`, {
+            credentials: 'same-origin',
+          });
+
+          if (!res.ok) {
+            const body = await res.json().catch(() => ({}));
+            throw new Error(body.message || 'Gagal memuat rekomendasi');
+          }
+
+          const json = await res.json();
+          renderDssRecommendation(json);
+          // persist compact CTA on the plant card (use plant id from hidden input)
+          try {
+            const plantId = scanPlantId.value || '';
+            updatePlantCardRecommendation(plantId, json);
+          } catch (e) {
+            // ignore
+          }
+        } catch (error) {
+          scanDssRecommendationBody.innerHTML = `<p class="text-sm text-red-600">${escapeHtml(error?.message || 'Rekomendasi DSS tidak tersedia.')}</p>`;
+          scanDssRecommendation.classList.remove('hidden');
+        }
+      }
+
+      scanCloseBtn.addEventListener('click', closeScanModal);
+      scanModalOverlay.addEventListener('click', closeScanModal);
+      scanResetBtn.addEventListener('click', resetScanForm);
+
+      scanImageInput.addEventListener('change', (event) => {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        selectedScanFile = file;
+        scanAnalyzeBtn.disabled = false;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          scanPreviewImg.src = e.target.result;
+          scanPreviewWrap.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      });
+
+      scanAnalyzeBtn.addEventListener('click', async () => {
+        if (!selectedScanFile || !scanPlantId.value) {
+          return;
+        }
+
+        scanLoading.classList.remove('hidden');
+        scanResult.classList.add('hidden');
+        scanAnalyzeBtn.disabled = true;
+
+        try {
+          const formData = new FormData();
+          formData.append('image', selectedScanFile);
+          formData.append('plant_id', scanPlantId.value);
+
+          const csrfTokenInput = document.querySelector('input[name="_csrf"]');
+          const headers = {};
+          if (csrfTokenInput) {
+            headers['x-csrf-token'] = csrfTokenInput.value;
+          }
+
+          const response = await fetch(`{{ route('garden_manager.detect') }}`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers,
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || 'Detection failed');
+          }
+
+          const confidenceRaw = Number(data.confidence ?? 0);
+          const confidence = confidenceRaw <= 1 ? Math.round(confidenceRaw * 100) : Math.round(confidenceRaw);
+
+          scanResultPlant.textContent = data.plant || data.plant_name || 'Unknown';
+          scanResultDisease.textContent = data.disease || data.disease_name || 'Unknown';
+          scanResultConfidence.textContent = `${Math.max(0, Math.min(100, confidence))}%`;
+          scanResultId.textContent = data.detection_id || '-';
+
+          if (data.detection_id) {
+            const shareUrl = new URL(`{{ route('community.index') }}`, window.location.origin);
+            shareUrl.searchParams.set('share_detection_id', String(data.detection_id));
+            shareUrl.searchParams.set('open_share', '1');
+            scanShareNow.setAttribute('href', shareUrl.toString());
+            scanShareCta.classList.remove('hidden');
+          } else {
+            scanShareCta.classList.add('hidden');
+          }
+
+          scanResult.classList.remove('hidden');
+
+          await fetchDssRecommendation(
+            data.plant || data.plant_name || '',
+            data.disease || data.disease_name || '',
+            data.confidence
+          );
+        } catch (error) {
+          scanResultPlant.textContent = 'Error';
+          scanResultDisease.textContent = error.message || 'Gagal deteksi';
+          scanResultConfidence.textContent = '0%';
+          scanResultId.textContent = '-';
+          scanShareCta.classList.add('hidden');
+          scanDssRecommendation.classList.add('hidden');
+          scanDssRecommendationBody.innerHTML = '';
+          scanResult.classList.remove('hidden');
+        } finally {
+          scanLoading.classList.add('hidden');
+          scanAnalyzeBtn.disabled = false;
+        }
+      });
+
+      // Show modal with specific action: 'water', 'pesticide', 'harvest'
+      window.showConfirmModal = function(action = 'water', plantId, plantName) {
+        // Set icon based on action
+        let iconHtml = '';
+        let actionMessage = '';
+        let normalizedAction = action;
+
+        if (action === 'water') {
+          iconHtml = `<i class="fas fa-tint text-5xl text-[#3FAB5E]"></i>`;
+          actionMessage = `Menyiram ${plantName}`;
+        } else if (action === 'pesticide') {
+          iconHtml = `<i class="fas fa-spray-can text-5xl text-[#FFA726]"></i>`;
+          actionMessage = `Memberikan pestisida pada ${plantName}`;
+          normalizedAction = 'treat';
+        } else if (action === 'harvest') {
+          iconHtml = `<i class="fas fa-cut text-5xl text-[#FF7043]"></i>`;
+          actionMessage = `Memanen ${plantName}`;
+        }
+        modalActionIcon.innerHTML = iconHtml;
+        modalPlantId.value = plantId;
+        modalMessage.textContent = actionMessage;
+        modalAction.value = normalizedAction;
+
+        confirmModal.classList.remove('hidden');
+        confirmModal.classList.add('flex');
+        modalOverlay.classList.remove('hidden');
+      };
+
+      function hideModal() {
+        confirmModal.classList.add('hidden');
+        confirmModal.classList.remove('flex');
+        modalOverlay.classList.add('hidden');
+      }
+
+      cancelButton.addEventListener('click', hideModal);
+
+      // Optional: Hide modal on overlay click
+      modalOverlay.addEventListener('click', hideModal);
+
+      // Example usage: window.showConfirmModal('water');
+      // Call window.showConfirmModal('pesticide') or 'harvest' as needed
+      });
+    </script>
+  @endslot
+  @slot('script')
+    
+  @endslot
+@end

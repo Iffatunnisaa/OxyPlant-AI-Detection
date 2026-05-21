@@ -1,1 +1,3 @@
-console.log('Hello World')
+import './recommendation'
+
+console.log('Assets loaded')

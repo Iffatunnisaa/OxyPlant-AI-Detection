@@ -1,80 +1,347 @@
-@layout.app({ title: "Garden Manager | OxyPlant" })
+@layout.app({ title: "Komunitas Deteksi | OxyPlant" })
   @slot('main')
-    <main class="bg-[#F2F1EB] min-h-screen">
+    <main class="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(63,171,94,0.12),transparent_38%),linear-gradient(180deg,#f6f4ee_0%,#f3f5ee_100%)]">
+      <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+        <div class="overflow-hidden rounded-[28px] border border-[#dbe3d7] bg-white/90 shadow-[0_24px_70px_rgba(15,74,52,0.08)] backdrop-blur">
+          <div class="border-b border-[#dbe3d7] bg-linear-to-br from-[#eff7ec] via-white to-[#fbfcfa] px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
+            <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+              <div class="max-w-3xl">
+                <span class="inline-flex items-center rounded-full border border-[#cfe0d0] bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#14573e] shadow-sm">
+                  Komunitas OxyPlant
+                </span>
+                <h1 class="mt-4 text-3xl font-bold tracking-tight text-[#0f4a34] sm:text-4xl lg:text-5xl">
+                  Ruang berbagi hasil deteksi dan saling bantu merawat tanaman.
+                </h1>
+                <p class="mt-4 max-w-2xl text-sm leading-relaxed text-[#5e6d63] sm:text-base lg:text-lg">
+                  Lihat hasil scan pengguna lain, pelajari rekomendasi perawatannya, lalu bantu dengan saran, pertanyaan, atau peringatan yang relevan.
+                </p>
+                <div class="mt-6 flex flex-wrap gap-3">
+                  <a href="#feed" class="inline-flex items-center rounded-xl bg-[#14573e] px-4 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-[#0f4a34] hover:shadow-md">
+                    Lihat diskusi terbaru
+                  </a>
+                  <a href="#recent-feedback" class="inline-flex items-center rounded-xl border border-[#dbe3d7] bg-white px-4 py-3 text-sm font-semibold text-[#4d6056] transition duration-200 hover:bg-[#f8faf5] hover:shadow-sm">
+                    Feedback terbaru
+                  </a>
+                </div>
+              </div>
 
-      <!-- Hero Section -->
-      <section class="py-12 text-center ">
-        <h1 class="text-3xl md:text-4xl font-bold text-[#0A5436] mb-4">
-          Komunitas OxyPlant
-        </h1>
-        <p class="text-gray-600 text-lg">
-          Lihat aktivitas dan tanaman milik pengguna Oxyplant lainnya
-        </p>
-      </section>
+              <!-- Removed summary metric cards to focus on community feed and feedback -->
+            </div>
+          </div>
 
-      <!-- Community Plants Section -->
-      <section class="py-8">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          @each(post in posts)
-            <div
-              class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col hover:scale-105 transition-transform duration-200"
-            >
-              <div class="flex items-center gap-4 p-4 border-b border-[#E0E0E0]">
-                <img
-                  src="{{ post.plant_id.photo_path || '/resources/img/plant_placeholder.png' }}"
-                  alt="{{ post.plant_id.name }}"
-                  class="w-16 h-16 object-cover rounded-lg border"
-                />
+          <div class="grid gap-8 px-6 py-8 sm:px-8 lg:grid-cols-[1.35fr_.65fr] lg:px-10 lg:py-10">
+            <section id="feed" class="space-y-6">
+              <div class="flex flex-col gap-3 rounded-3xl border border-[#dbe3d7] bg-white px-5 py-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 class="text-lg font-bold text-[#0A5436] mb-1">
-                    {{ post.plant_id.name }}
-                  </h3>
-                  <span
-                    class="inline-block bg-green-100 border border-green-700 text-green-700 text-xs px-2 py-1 rounded capitalize"
-                  >
-                    {{ post.plant_id.type }}
-                </span>
+                  <h2 class="text-xl font-bold text-[#0f4a34]">Feed hasil deteksi</h2>
+                  <p class="mt-1 text-sm text-[#6a7b70]">Setiap kartu adalah kasus nyata dari pengguna OxyPlant.</p>
                 </div>
+                <a href="{{ route('garden_manager.index') }}" class="inline-flex items-center justify-center rounded-xl border border-[#cfe0d0] bg-[#eef8ef] px-4 py-2.5 text-sm font-semibold text-[#14573e] transition duration-200 hover:bg-[#dff2e5]">
+                  Bagikan lewat scan
+                </a>
               </div>
-              <div class="p-4 flex-1 flex flex-col justify-between">
-                <div class="mb-3">
-                  <span
-                    class="{{ `inline-block text-xs border font-semibold px-2 py-1 rounded-full capitalize ${
-                    post.status == 'tumbuh' ? 'bg-green-200 text-green-800 border-green-800' :
-                    post.status == 'siap panen' ? 'bg-yellow-200 text-yellow-800 border-yellow-800' :
-                    post.status == 'terkena hama' ? 'bg-red-200 text-red-800 border-red-800' :
-                    'bg-gray-200 text-gray-800'
-                  }` }}"
-                  >
-                    {{ post.status }}
-                </span>
-                  <span class="mt-2 text-gray-700 text-sm italic">"{{ post.message }}"</span>
-                </div>
-                <div class="flex items-center justify-between mt-4">
-                  <div class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.635 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    <span class="text-xs text-gray-600">
-                      {{ post.user_id.fullname || 'Anonim' }}
-                  </span>
+
+              @if(detections.length)
+                @each(detection in detections)
+                  <article class="overflow-hidden rounded-3xl border border-[#dbe3d7] bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_20px_55px_rgba(15,74,52,0.1)]">
+                    <div class="border-b border-[#edf1ea] px-5 py-5 sm:px-6">
+                      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                        <div class="flex items-start gap-4">
+                          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#eef6ec] text-sm font-bold text-[#14573e]">
+                            {{ detection.userInitials }}
+                          </div>
+                          <div>
+                            <div class="flex flex-wrap items-center gap-2">
+                              <h2 class="text-lg font-semibold text-[#0f4a34]">{{ detection.userDisplayName }}</h2>
+                              <span class="rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] {{ detection.statusTone }}">
+                                {{ detection.statusLabel }}
+                              </span>
+                            </div>
+                            <p class="mt-1 text-sm text-[#6a7b70]">
+                              membagikan scan {{ detection.plantName }} pada {{ detection.createdAt.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) }}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2">
+                          <span class="rounded-full border border-[#dbe3d7] bg-[#f8faf5] px-3 py-1.5 text-xs font-semibold text-[#4d6056]">
+                            {{ detection.plantName }}
+                          </span>
+                          <span class="rounded-full border border-[#dbe3d7] bg-white px-3 py-1.5 text-xs font-semibold text-[#4d6056]">
+                            {{ detection.plant_id?.type || 'Tanaman' }}
+                          </span>
+                          @if(detection.confidence !== null)
+                            <span class="rounded-full border border-[#cfe0d0] bg-[#eef8ef] px-3 py-1.5 text-xs font-semibold text-[#14573e]">
+                              Confidence {{ detection.confidence }}%
+                            </span>
+                          @endif
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="grid gap-6 px-5 py-5 sm:px-6 lg:grid-cols-[260px_1fr] lg:items-start">
+                      <div class="overflow-hidden rounded-2xl border border-[#dbe3d7] bg-[#f8faf5]">
+                        <img
+                          src="{{ detection.imageUrl || detection.plant_id?.photo_path || '/resources/img/plant_placeholder.png' }}"
+                          alt="Hasil scan {{ detection.plantName }}"
+                          class="h-64 w-full object-cover lg:h-80"
+                        />
+                        <div class="border-t border-[#dbe3d7] bg-white px-4 py-3">
+                          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#6a7b70]">Bukti scan</p>
+                          <p class="mt-1 text-sm font-semibold text-[#0f4a34]">{{ detection.plantName }}</p>
+                        </div>
+                      </div>
+
+                      <div class="space-y-5">
+                        <div class="grid gap-3 sm:grid-cols-3">
+                          <div class="rounded-2xl border border-[#dbe3d7] bg-[#f8faf5] p-4">
+                            <p class="text-xs uppercase tracking-[0.18em] text-gray-500">Hasil deteksi</p>
+                            <p class="mt-2 text-base font-semibold text-[#0f4a34]">{{ detection.diseaseName }}</p>
+                          </div>
+                          <div class="rounded-2xl border border-[#dbe3d7] bg-[#f8faf5] p-4">
+                            <p class="text-xs uppercase tracking-[0.18em] text-gray-500">Keyakinan AI</p>
+                            <p class="mt-2 text-base font-semibold text-[#0f4a34]">{{ detection.confidence !== null ? `${detection.confidence}%` : '-' }}</p>
+                          </div>
+                          <div class="rounded-2xl border border-[#dbe3d7] bg-[#f8faf5] p-4">
+                            <p class="text-xs uppercase tracking-[0.18em] text-gray-500">Diskusi</p>
+                            <p class="mt-2 text-base font-semibold text-[#0f4a34]">{{ detection.feedbackCount }} balasan</p>
+                          </div>
+                        </div>
+
+                        @if(detection.status == 'failed')
+                          <div class="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-900">
+                            <p class="font-semibold">Deteksi belum berhasil diproses.</p>
+                            <p class="mt-1 text-amber-800">{{ detection.error_message || 'Silakan unggah ulang gambar yang lebih jelas.' }}</p>
+                          </div>
+                        @else
+                          <div class="rounded-2xl border border-[#dbe3d7] bg-[#f8faf5] px-4 py-4 text-sm text-[#5e6d63]">
+                            <p class="font-semibold text-[#0f4a34]">Untuk komunitas</p>
+                            <p class="mt-1 leading-relaxed">
+                              Bandingkan kondisi daun pada gambar, beri masukan bila pernah melihat gejala serupa, atau tambahkan catatan perawatan yang membantu.
+                            </p>
+                          </div>
+                        @endif
+
+                        @if(detection.recommendation)
+                          <div class="rounded-2xl border border-amber-200 bg-amber-50/70 p-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                              <div>
+                                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">Rekomendasi DSS</p>
+                                <h3 class="mt-1 text-base font-semibold text-[#0f4a34]">{{ detection.diseaseName }}</h3>
+                              </div>
+                              <span class="rounded-full border border-amber-300 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-amber-800">
+                                {{ detection.recommendation.severity }}
+                              </span>
+                            </div>
+
+                            <div class="mt-4 grid gap-4 md:grid-cols-3">
+                              <div>
+                                <p class="text-xs font-semibold uppercase tracking-[0.12em] text-amber-800">Prevention</p>
+                                @if(detection.recommendation.prevention.length)
+                                  <ul class="mt-2 list-disc space-y-1 pl-4 text-sm leading-relaxed text-[#4d6056]">
+                                    @each(item in detection.recommendation.prevention.slice(0, 2))
+                                      <li>{{ item }}</li>
+                                    @endeach
+                                  </ul>
+                                @else
+                                  <p class="mt-2 text-sm text-[#6a7b70]">Belum ada rekomendasi.</p>
+                                @endif
+                              </div>
+
+                              <div>
+                                <p class="text-xs font-semibold uppercase tracking-[0.12em] text-amber-800">Treatment</p>
+                                @if(detection.recommendation.treatment.length)
+                                  <ul class="mt-2 list-disc space-y-1 pl-4 text-sm leading-relaxed text-[#4d6056]">
+                                    @each(item in detection.recommendation.treatment.slice(0, 2))
+                                      <li>{{ item }}</li>
+                                    @endeach
+                                  </ul>
+                                @else
+                                  <p class="mt-2 text-sm text-[#6a7b70]">Belum ada rekomendasi.</p>
+                                @endif
+                              </div>
+
+                              <div>
+                                <p class="text-xs font-semibold uppercase tracking-[0.12em] text-amber-800">Monitoring</p>
+                                @if(detection.recommendation.monitoring.length)
+                                  <ul class="mt-2 list-disc space-y-1 pl-4 text-sm leading-relaxed text-[#4d6056]">
+                                    @each(item in detection.recommendation.monitoring.slice(0, 2))
+                                      <li>{{ item }}</li>
+                                    @endeach
+                                  </ul>
+                                @else
+                                  <p class="mt-2 text-sm text-[#6a7b70]">Belum ada rekomendasi.</p>
+                                @endif
+                              </div>
+                            </div>
+                          </div>
+                        @endif
+
+                        <div class="rounded-2xl border border-[#dbe3d7] bg-white p-4">
+                          <div class="flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                              <h3 class="text-base font-semibold text-[#0f4a34]">Feedback komunitas</h3>
+                              <p class="mt-1 text-sm text-[#6a7b70]">Bantu pemilik tanaman memahami hasil scan ini.</p>
+                            </div>
+                            <span class="rounded-full border border-[#dbe3d7] bg-[#f8faf5] px-3 py-1 text-xs font-semibold text-[#4d6056]">
+                              {{ detection.feedbackCount }} respons
+                            </span>
+                          </div>
+
+                          <div class="mt-4 space-y-3">
+                            @if(detection.feedbacks.length)
+                              @each(feedback in detection.feedbacks)
+                                <article class="rounded-2xl border {{ feedback.categoryTone }} p-4">
+                                  <div class="flex flex-wrap items-center justify-between gap-2">
+                                    <div class="flex items-center gap-3">
+                                      <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-white/80 text-xs font-bold text-current shadow-sm">
+                                        {{ feedback.userInitials }}
+                                      </div>
+                                      <div>
+                                        <p class="text-sm font-semibold text-[#0f4a34]">{{ feedback.userDisplayName }}</p>
+                                        <p class="text-xs text-current/70">{{ feedback.createdAt.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) }}</p>
+                                      </div>
+                                    </div>
+
+                                    <span class="rounded-full border border-current/20 bg-white/70 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-current">
+                                      {{ feedback.categoryLabel }}
+                                    </span>
+                                  </div>
+
+                                  <p class="mt-3 text-sm leading-relaxed text-[#355044]">{{ feedback.message }}</p>
+                                </article>
+                              @endeach
+                            @else
+                              <div class="rounded-2xl border border-dashed border-[#dbe3d7] bg-[#f8faf5] px-4 py-6 text-center text-sm text-[#6a7b70]">
+                                Belum ada feedback. Jadikan deteksi ini bahan diskusi pertama.
+                              </div>
+                            @endif
+                          </div>
+
+                          <div class="mt-5 border-t border-[#edf1ea] pt-4">
+                            @if(currentUser)
+                              <form method="POST" action="{{ route('community.feedback.store') }}" class="space-y-4">
+                                {{ csrfField() }}
+                                <input type="hidden" name="detection_result_id" value="{{ detection._id }}" />
+
+                                <div class="grid gap-3 sm:grid-cols-[170px_1fr]">
+                                  <div>
+                                    <label class="mb-1.5 block text-sm font-medium text-gray-500" for="category-{{ detection._id }}">Jenis feedback</label>
+                                    <select
+                                      id="category-{{ detection._id }}"
+                                      name="category"
+                                      class="w-full rounded-xl border border-[#dbe3d7] bg-white px-4 py-3 text-sm text-gray-800 outline-none transition duration-200 focus:border-[#3FAB5E] focus:ring-2 focus:ring-[#3FAB5E]/20"
+                                    >
+                                      <option value="saran">Saran</option>
+                                      <option value="pertanyaan">Pertanyaan</option>
+                                      <option value="peringatan">Peringatan</option>
+                                      <option value="dukungan">Dukungan</option>
+                                    </select>
+                                  </div>
+
+                                  <div>
+                                    <label class="mb-1.5 block text-sm font-medium text-gray-500" for="message-{{ detection._id }}">Tulis pesan</label>
+                                    <textarea
+                                      id="message-{{ detection._id }}"
+                                      name="message"
+                                      rows="3"
+                                      class="w-full rounded-xl border border-[#dbe3d7] bg-white px-4 py-3 text-sm text-gray-800 outline-none transition duration-200 placeholder:text-gray-400 focus:border-[#3FAB5E] focus:ring-2 focus:ring-[#3FAB5E]/20"
+                                      placeholder="Bagikan saran, pertanyaan, atau peringatan untuk pemilik tanaman ini"
+                                    ></textarea>
+                                  </div>
+                                </div>
+
+                                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                  <p class="text-xs leading-relaxed text-[#6a7b70]">
+                                    Feedback yang jelas membantu user lain bertindak lebih cepat terhadap hasil deteksi.
+                                  </p>
+                                  <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-[#14573e] px-5 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-[#0f4a34] hover:shadow-md">
+                                    Kirim feedback
+                                  </button>
+                                </div>
+                              </form>
+                            @else
+                              <div class="rounded-2xl border border-dashed border-[#cfd8cd] bg-[#f8faf5] px-5 py-6 text-center">
+                                <p class="text-sm font-semibold text-[#0f4a34]">Masuk dulu untuk memberi feedback.</p>
+                                <p class="mt-1 text-sm text-[#6a7b70]">Setelah login, kamu bisa ikut mengoreksi atau menambah konteks dari hasil deteksi pengguna lain.</p>
+                                <a href="{{ route('auth.login') }}" class="mt-4 inline-flex items-center rounded-xl bg-[#14573e] px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-[#0f4a34]">
+                                  Masuk ke akun
+                                </a>
+                              </div>
+                            @endif
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                @endeach
+              @else
+                <div class="rounded-3xl border border-dashed border-[#cfd8cd] bg-white px-6 py-14 text-center shadow-sm">
+                  <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#eef6ec] text-[#14573e] shadow-sm">
+                    <i class="fas fa-seedling text-2xl"></i>
                   </div>
-                  <span class="text-xs text-gray-400">
-                    {{ post.createdAt.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) }}
-                </span>
+                  <h2 class="mt-5 text-2xl font-bold text-[#0f4a34]">Belum ada riwayat deteksi untuk ditampilkan.</h2>
+                  <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-[#6a7b70]">
+                    Saat user mulai melakukan deteksi gambar, hasilnya akan muncul di sini bersama masukan komunitas agar informasinya lebih berguna dan cepat ditindaklanjuti.
+                  </p>
                 </div>
-              </div>
-            </div>
-          @else
-            <div class="col-span-full text-center text-gray-400 py-12">
-              Belum ada aktivitas komunitas.
-            </div>
-          @endeach
+              @endif
+            </section>
+
+            <aside class="space-y-6 lg:sticky lg:top-6 lg:self-start">
+              <section id="recent-feedback" class="rounded-3xl border border-[#dbe3d7] bg-white p-5 shadow-sm">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 class="text-lg font-semibold text-[#0f4a34]">Aktivitas terbaru</h2>
+                    <p class="mt-1 text-sm text-[#6a7b70]">Masukan paling baru dari pengguna lain.</p>
+                  </div>
+                  <span class="rounded-full border border-[#dbe3d7] bg-[#f8faf5] px-3 py-1 text-xs font-semibold text-[#4d6056]">
+                    Live
+                  </span>
+                </div>
+
+                <div class="mt-4 space-y-3">
+                  @if(recentFeedback.length)
+                    @each(feedback in recentFeedback)
+                      <article class="rounded-2xl border border-[#dbe3d7] bg-[#f8faf5] p-4">
+                        <div class="flex items-start gap-3">
+                          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white text-xs font-bold text-[#14573e] shadow-sm">
+                            {{ feedback.userDisplayName.charAt(0) }}
+                          </div>
+                          <div class="min-w-0 flex-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                              <p class="font-semibold text-[#0f4a34]">{{ feedback.userDisplayName }}</p>
+                              <span class="rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] {{ feedback.categoryTone }}">
+                                {{ feedback.categoryLabel }}
+                              </span>
+                            </div>
+                            <p class="mt-1 text-sm text-[#6a7b70]">{{ feedback.plantName }}</p>
+                            <p class="mt-2 text-sm leading-relaxed text-[#355044]">{{ feedback.message }}</p>
+                          </div>
+                        </div>
+                      </article>
+                    @endeach
+                  @else
+                    <div class="rounded-2xl border border-dashed border-[#dbe3d7] px-4 py-6 text-center text-sm text-[#6a7b70]">
+                      Belum ada feedback baru.
+                    </div>
+                  @endif
+                </div>
+              </section>
+
+              <section class="rounded-3xl border border-[#dbe3d7] bg-[#0f4a34] p-5 text-white shadow-sm">
+                <h2 class="text-lg font-semibold">Cara membantu dengan baik</h2>
+                <p class="mt-2 text-sm leading-relaxed text-white/80">
+                  Pakai kategori feedback untuk membantu pemilik tanaman memahami hasil scan secara praktis.
+                </p>
+                <ul class="mt-4 space-y-3 text-sm leading-relaxed text-white/85">
+                  <li>• Tulis masukan yang spesifik terhadap hasil deteksi, bukan komentar umum.</li>
+                  <li>• Gunakan kategori pertanyaan atau peringatan jika ada konteks penting.</li>
+                  <li>• Respons yang cepat membantu pengguna lain mengambil tindakan lebih awal.</li>
+                </ul>
+              </section>
+            </aside>
+          </div>
         </div>
       </section>
     </main>

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Selamat datang {{ user.email }} </h1>
+    <p>Ini adalah dashboard Anda.</p>
+    <form method="POST" action="/logout">
+      <input type="hidden" name="_csrf" value="{{ csrfField() }}">
+      <button type="submit">Keluar</button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+@props(['prediction', 'severity', 'recommendation', 'references'])
+
+@php
+function severityClasses($s) {
+  switch ($s) {
+    case 'low':
+      return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+    case 'medium':
+      return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+    case 'high':
+      return 'bg-amber-100 text-amber-800 border-amber-200';
+    case 'critical':
+      return 'bg-red-100 text-red-800 border-red-200';
+    default:
+      return 'bg-gray-100 text-gray-800 border-gray-200';
+  }
+}
+@endphp
+
+<div class="rounded-xl border p-5 shadow-sm bg-white">
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <h3 class="text-lg font-semibold text-gray-800">Recommendation</h3>
+      <p class="text-sm text-gray-600">{{ $prediction['plant'] }} — {{ $prediction['disease'] }} @if(isset($prediction['confidence'])) ({{ round($prediction['confidence'] * 100) }}%) @endif</p>
+    </div>
+    <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-semibold {{ severityClasses($severity) }}">{{ strtoupper($severity) }}</span>
+  </div>
+
+  <div class="mt-4 grid gap-4 sm:grid-cols-3">
+    <div>
+      <h4 class="text-sm font-semibold text-gray-700">Prevention</h4>
+      @if(count($recommendation['prevention'] ?? []) )
+        <ul class="mt-2 list-disc list-inside text-sm text-gray-600">
+          @foreach($recommendation['prevention'] as $p)
+            <li>{{ $p }}</li>
+          @endforeach
+        </ul>
+      @else
+        <p class="mt-2 text-sm text-gray-500">No prevention guidance.</p>
+      @endif
+    </div>
+
+    <div>
+      <h4 class="text-sm font-semibold text-gray-700">Treatment</h4>
+      @if(count($recommendation['treatment'] ?? []))
+        <ul class="mt-2 list-disc list-inside text-sm text-gray-600">
+          @foreach($recommendation['treatment'] as $t)
+            <li>{{ $t }}</li>
+          @endforeach
+        </ul>
+      @else
+        <p class="mt-2 text-sm text-gray-500">No treatment guidance.</p>
+      @endif
+    </div>
+
+    <div>
+      <h4 class="text-sm font-semibold text-gray-700">Monitoring</h4>
+      @if(count($recommendation['monitoring'] ?? []))
+        <ul class="mt-2 list-disc list-inside text-sm text-gray-600">
+          @foreach($recommendation['monitoring'] as $m)
+            <li>{{ $m }}</li>
+          @endforeach
+        </ul>
+      @else
+        <p class="mt-2 text-sm text-gray-500">No monitoring guidance.</p>
+      @endif
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <h4 class="text-sm font-semibold text-gray-700">References</h4>
+    @if(count($references ?? []))
+      <ul class="mt-2 text-sm text-gray-600 list-disc list-inside">
+        @foreach($references as $r)
+          <li>{{ $r }}</li>
+        @endforeach
+      </ul>
+    @else
+      <p class="mt-2 text-sm text-gray-500">No references provided.</p>
+    @endif
+  </div>
+</div>
