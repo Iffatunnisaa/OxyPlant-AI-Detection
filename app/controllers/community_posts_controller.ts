@@ -1,8 +1,11 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import CommunityPost from '#models/community_post'
 import CommunityFeedback from '#models/community_feedback'
 import DetectionResult from '#models/detection_result'
 import CommunityService from '#services/community_service'
+
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : 'Something went wrong'
+}
 
 export default class CommunityPostsController {
   async index({ request, view }: HttpContext) {
@@ -75,10 +78,10 @@ export default class CommunityPostsController {
     }
 
     try {
-      const post = await CommunityService.createPostFromDetection(currentUser.id, payload.detectionId, payload)
+      await CommunityService.createPostFromDetection(currentUser.id, payload.detectionId, payload)
       return response.redirect().toRoute('community.index')
     } catch (err) {
-      return response.badRequest(err.message)
+      return response.badRequest(getErrorMessage(err))
     }
   }
 
@@ -95,7 +98,7 @@ export default class CommunityPostsController {
       await CommunityService.addComment(currentUser.id, postId, body, parent)
       return response.redirect().back()
     } catch (err) {
-      return response.badRequest(err.message)
+      return response.badRequest(getErrorMessage(err))
     }
   }
 
@@ -113,7 +116,7 @@ export default class CommunityPostsController {
 
       return response.send({ data: comments })
     } catch (err) {
-      return response.badRequest(err.message)
+      return response.badRequest(getErrorMessage(err))
     }
   }
 }

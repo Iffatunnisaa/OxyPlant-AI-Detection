@@ -8,15 +8,20 @@
 
     <!-- Desktop Menu -->
     <div class="hidden md:flex space-x-4 lg:space-x-6 items-center">
-      @if(user)
+      @if(isAdmin)
         <a
-          href="{{ route('admin.garden_manager.index') }}"
+          href="{{ route('admin.dashboard') }}"
+          class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Admin Dashboard</a>
+        <a
+          href="{{ route('admin.plant_info.index') }}"
+          class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Kelola Info Tanaman</a>
+      @elseif(user)
+        <a
+          href="{{ route('garden_manager.index') }}"
           class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
         >Garden Manager</a>
-        <a
-          href="{{ route('plant_care.index') }}"
-          class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-        >Plant Care</a>
         <a
           href="{{ route('plant_info.index') }}"
           class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
@@ -40,7 +45,7 @@
       @endif
       @if(user)
         <a
-          href="{{ route('admin.profile') }}"
+          href="{{ route('profile') }}"
           class="text-[#4E504D] hover:text-green-300 px-3 py-1 md:px-4 md:py-2 rounded-lg ml-2 md:ml-4 transition-colors duration-300"
         >
           <svg
@@ -82,15 +87,20 @@
 
   <!-- Mobile Menu (hidden by default) -->
   <div id="mobile-menu" class="hidden md:hidden pt-4 pb-2">
-    @if(user)
+    @if(isAdmin)
       <a
-        href="{{ route('admin.garden_manager.index') }}"
+        href="{{ route('admin.dashboard') }}"
+        class="block nav-text-white hover:text-green-300 py-2 px-4"
+      >Admin Dashboard</a>
+      <a
+        href="{{ route('admin.plant_info.index') }}"
+        class="block nav-text-white hover:text-green-300 py-2 px-4"
+      >Kelola Info Tanaman</a>
+    @elseif(user)
+      <a
+        href="{{ route('garden_manager.index') }}"
         class="block nav-text-white hover:text-green-300 py-2 px-4"
       >Garden Manager</a>
-      <a
-        href="{{ route('plant_care.index') }}"
-        class="block nav-text-white hover:text-green-300 py-2 px-4"
-      >Plant Care</a>
       <a
         href="{{ route('plant_info.index') }}"
         class="block nav-text-white hover:text-green-300 py-2 px-4"
@@ -108,7 +118,7 @@
     @endif
     @if(user)
       <a
-        href="{{ route('admin.profile') }}"
+        href="{{ route('profile') }}"
         class="block bg-green-600 hover:bg-green-700 text-[#F1F0E9] py-2 px-4 rounded-lg mt-2 text-center"
       >
         <svg

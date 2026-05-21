@@ -27,16 +27,6 @@ router.get('/about', async ({ view }) => {
   return view.render('pages/about')
 }).as('about')
 
-router.group(() => {
-  router.get('/', async ({ view }) => {
-    return view.render('pages/plant_care/index')
-  }).as('index')
-
-  router.get('/detail', async ({ view }) => {
-    return view.render('pages/plant_care/detail')
-  }).as('detail')
-}).prefix('/plant_care').as('plant_care')
-
 const plantInfoCrops = [
   {
     id: 'padi',

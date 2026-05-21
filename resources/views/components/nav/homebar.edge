@@ -27,14 +27,22 @@
           class="nav-link hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
         >Info Tanaman</a>
       @endif
-      <a
-        href="{{ route('community.index') }}"
-        class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-      >Komunitas</a>
-      <a
-        href="{{ route('about') }}"
-        class="nav-text-white hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
-      >Tentang
+      @if(isAuthenticated && !isAdmin)
+        <a
+          href="{{ route('community.index') }}"
+          class="nav-link hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Komunitas</a>
+        <a
+          href="{{ route('about') }}"
+          class="nav-link hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Tentang</a>
+      @endif
+      @if(!isAuthenticated)
+        <a
+          href="{{ route('about') }}"
+          class="nav-link hover:text-green-300 transition-colors duration-300 text-sm md:text-base"
+        >Tentang</a>
+      @endif
       @if(isAuthenticated)
         <a
           href="{{ route('profile') }}"
@@ -99,11 +107,16 @@
         class="block nav-link hover:text-green-300 py-2 px-4"
       >Info Tanaman</a>
     @endif
-    <a
-      href="{{ route('community.index') }}"
-      class="block nav-link hover:text-green-300 py-2 px-4"
-    >Komunitas</a>
-    <a href="{{ route('about') }}" class="block nav-link hover:text-green-300 py-2 px-4">Tentang</a>
+    @if(isAuthenticated && !isAdmin)
+      <a
+        href="{{ route('community.index') }}"
+        class="block nav-link hover:text-green-300 py-2 px-4"
+      >Komunitas</a>
+      <a href="{{ route('about') }}" class="block nav-link hover:text-green-300 py-2 px-4">Tentang</a>
+    @endif
+    @if(!isAuthenticated)
+      <a href="{{ route('about') }}" class="block nav-link hover:text-green-300 py-2 px-4">Tentang</a>
+    @endif
     @if(isAuthenticated)
       <a
         href="{{ route('profile') }}"
