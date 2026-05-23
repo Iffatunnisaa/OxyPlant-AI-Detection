@@ -32,7 +32,7 @@ https://oxyplant-production.up.railway.app/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/username/oxyplant.git
+git clone https://github.com/Iffatunnisaa/OxyPlant-AI-Detection.git
 ```
 
 ### 2. Go to folder and install dependencies
