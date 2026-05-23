@@ -82,7 +82,8 @@
                     <div class="grid gap-6 px-5 py-5 sm:px-6 lg:grid-cols-[260px_1fr] lg:items-start">
                       <div class="overflow-hidden rounded-2xl border border-[#dbe3d7] bg-[#f8faf5]">
                         <img
-                          src="{{ detection.imageUrl || detection.plant_id?.photo_path || '/resources/img/plant_placeholder.png' }}"
+                          src="{{ detection.imageUrl || detection.plant_id?.photo_path || 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' }}"
+                          data-oxyplant-asset="plant"
                           alt="Hasil scan {{ detection.plantName }}"
                           class="h-64 w-full object-cover lg:h-80"
                         />

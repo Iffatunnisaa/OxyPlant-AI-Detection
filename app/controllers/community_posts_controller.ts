@@ -35,7 +35,7 @@ export default class CommunityPostsController {
 
       return {
         ...item.toObject(),
-        imageUrl: item?.source_image?.filename ? `/uploads/${item.source_image.filename}` : null,
+        imageUrl: null,
         confidenceLabel: normalizedConfidence === null ? '-' : `${normalizedConfidence}%`,
       }
     })

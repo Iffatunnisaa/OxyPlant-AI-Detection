@@ -35,7 +35,7 @@
                 @each(item in shareCandidates)
                   <article class="rounded-2xl border border-[#dbe3d7] bg-[#fbfcfa] p-3 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(15,74,52,0.08)]">
                     <div class="flex items-start gap-3">
-                      <img src="{{ item.imageUrl || '/resources/img/plant.jpeg' }}" alt="preview" class="h-14 w-14 shrink-0 rounded-xl object-cover" />
+                      <img src="{{ item.imageUrl || 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' }}" data-oxyplant-asset="plant" alt="preview" class="h-14 w-14 shrink-0 rounded-xl object-cover" />
                       <div class="min-w-0 flex-1">
                         <p class="truncate text-sm font-semibold text-[#0f4a34]">{{ item.plant_name || 'Tanaman' }}</p>
                         <p class="truncate text-xs text-[#6a7b70]">{{ item.disease_name || 'Hasil deteksi' }}</p>

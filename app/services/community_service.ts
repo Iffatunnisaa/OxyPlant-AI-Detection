@@ -13,9 +13,16 @@ function normalizeConfidenceValue(confidence: unknown) {
   return Math.max(0, Math.min(100, Math.round(normalized)))
 }
 
+function sanitizeLocalUploadPath(filePath?: string | null) {
+  if (!filePath || filePath.startsWith('/uploads/')) {
+    return null
+  }
+
+  return filePath
+}
+
 function getFallbackCoverPath(detection: any) {
-  const filename = detection?.source_image?.filename
-  return filename ? `/uploads/${filename}` : '/resources/img/plant.jpeg'
+  return sanitizeLocalUploadPath(detection?.coverPath) || null
 }
 
 class CommunityService {
@@ -100,9 +107,8 @@ class CommunityService {
     return result.map((post: any) => ({
       ...post,
       confidenceLabel: normalizeConfidenceValue(post.confidence),
-      coverImageUrl: post.sourceImageFilename
-        ? `/uploads/${post.sourceImageFilename}`
-        : post.coverPath || '/resources/img/plant.jpeg',
+      coverPath: sanitizeLocalUploadPath(post.coverPath),
+      coverImageUrl: null,
       createdAtLabel: post.createdAt
         ? new Intl.DateTimeFormat('id-ID', {
             day: '2-digit',
@@ -154,9 +160,8 @@ class CommunityService {
     const post = result[0]
     return {
       ...post,
-      sourceImageUrl: post.sourceImageFilename
-        ? `/uploads/${post.sourceImageFilename}`
-        : post.coverPath || '/resources/img/plant.jpeg',
+      coverPath: sanitizeLocalUploadPath(post.coverPath),
+      sourceImageUrl: null,
     }
   }
 

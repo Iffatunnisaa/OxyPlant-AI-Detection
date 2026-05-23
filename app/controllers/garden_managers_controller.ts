@@ -6,7 +6,10 @@ import Application from '@adonisjs/core/services/app'
 import env from '#start/env'
 import axios from 'axios'
 import FormData from 'form-data'
+import os from 'os'
+import path from 'path'
 import fs from 'fs'
+import fsp from 'fs/promises'
 
 const allowedImageExtensions = new Set(['jpg', 'jpeg', 'png'])
 
@@ -296,7 +299,10 @@ export default class GardenManagersController {
     }
 
     const fileName = `${cuid()}.${imageExtension}`
-    await image.move(Application.publicPath('uploads'), {
+    const tempDir = path.join(os.tmpdir(), 'oxyplant', 'detections')
+    await fsp.mkdir(tempDir, { recursive: true })
+
+    await image.move(tempDir, {
       name: fileName,
       overwrite: true,
     })
@@ -307,8 +313,8 @@ export default class GardenManagersController {
 
     const aiBaseUrl = (env.get('FASTAPI_AI_URL') || 'http://127.0.0.1:8000').replace(/\/$/, '')
     const aiEndpoint = `${aiBaseUrl}/predict-image/`
-    const sourceImagePath = `/uploads/${fileName}`
     const startedAt = Date.now()
+    const tempImagePath = image.filePath
 
     let detectionStatus: 'success' | 'failed' = 'failed'
     let predictionPayload: any = null
@@ -376,21 +382,27 @@ export default class GardenManagersController {
 
     await detectionResult.save()
 
-    if (detectionStatus === 'failed') {
-      return response.badGateway({
-        message: aiErrorMessage || 'AI detection failed',
-        detection_id: detectionResult._id,
-        source_image: sourceImagePath,
-        raw_prediction: predictionPayload,
-      })
-    }
+    try {
+      if (detectionStatus === 'failed') {
+        return response.badGateway({
+          message: aiErrorMessage || 'AI detection failed',
+          detection_id: detectionResult._id,
+          source_image: null,
+          raw_prediction: predictionPayload,
+        })
+      }
 
-    return response.ok({
-      message: 'Detection success',
-      detection_id: detectionResult._id,
-      source_image: sourceImagePath,
-      warning: aiErrorMessage || undefined,
-      ...predictionPayload,
-    })
+      return response.ok({
+        message: 'Detection success',
+        detection_id: detectionResult._id,
+        source_image: null,
+        warning: aiErrorMessage || undefined,
+        ...predictionPayload,
+      })
+    } finally {
+      if (tempImagePath) {
+        await fsp.unlink(tempImagePath).catch(() => undefined)
+      }
+    }
   }
 }
