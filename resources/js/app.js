@@ -32,7 +32,12 @@ function applyOxyplantAssets(root = document) {
 		}
 
 		if (node instanceof HTMLImageElement) {
-			node.src = assetUrl
+			const currentSrc = node.getAttribute('src') || ''
+			const isPlaceholderSrc = !currentSrc || currentSrc.startsWith('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==')
+
+			if (isPlaceholderSrc) {
+				node.src = assetUrl
+			}
 			return
 		}
 
