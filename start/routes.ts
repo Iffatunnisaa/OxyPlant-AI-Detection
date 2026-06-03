@@ -221,3 +221,15 @@ router.group(() => {
 .prefix('/admin/plant-info')
 .as('admin.plant_info')
 .use([middleware.auth(), middleware.admin()])
+
+router.group(() => {
+  router.get('/', [PlantInfoAdminController, 'index']).as('index')
+  router.get('/create', [PlantInfoAdminController, 'create']).as('create')
+  router.post('/', [PlantInfoAdminController, 'store']).as('store')
+  router.get('/:id/edit', [PlantInfoAdminController, 'edit']).as('edit')
+  router.put('/:id', [PlantInfoAdminController, 'update']).as('update')
+  router.delete('/:id', [PlantInfoAdminController, 'destroy']).as('destroy')
+})
+.prefix('/admin/plant_info')
+.as('admin.plant_info_legacy')
+.use([middleware.auth(), middleware.admin()])

@@ -2,6 +2,17 @@ import type { HttpContext } from '@adonisjs/core/http'
 import CommunityFeedback from '#models/community_feedback'
 import DetectionResult from '#models/detection_result'
 import CommunityService from '#services/community_service'
+import fs from 'node:fs'
+import path from 'node:path'
+
+function buildExistingUploadUrl(fileName?: string | null) {
+  if (!fileName) {
+    return null
+  }
+
+  const filePath = path.join(process.cwd(), 'public', 'uploads', fileName)
+  return fs.existsSync(filePath) ? `/uploads/${fileName}` : null
+}
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : 'Something went wrong'
@@ -35,7 +46,7 @@ export default class CommunityPostsController {
 
       return {
         ...item.toObject(),
-        imageUrl: null,
+        imageUrl: buildExistingUploadUrl(item.source_image?.filename),
         confidenceLabel: normalizedConfidence === null ? '-' : `${normalizedConfidence}%`,
       }
     })

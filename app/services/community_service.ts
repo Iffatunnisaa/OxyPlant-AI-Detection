@@ -2,6 +2,8 @@ import CommunityPost from '#models/community_post'
 import CommunityFeedback from '#models/community_feedback'
 import DetectionResult from '#models/detection_result'
 import { Types } from 'mongoose'
+import fs from 'node:fs'
+import path from 'node:path'
 
 function normalizeConfidenceValue(confidence: unknown) {
   const numericConfidence = Number(confidence)
@@ -14,15 +16,38 @@ function normalizeConfidenceValue(confidence: unknown) {
 }
 
 function sanitizeLocalUploadPath(filePath?: string | null) {
-  if (!filePath || filePath.startsWith('/uploads/')) {
+  if (!filePath) {
     return null
   }
 
-  return filePath
+  if (filePath.startsWith('http://') || filePath.startsWith('https://')) {
+    return filePath
+  }
+
+  if (filePath.startsWith('/uploads/') || filePath.startsWith('/assets/')) {
+    return filePath
+  }
+
+  return null
+}
+
+function buildExistingUploadUrl(fileName?: string | null) {
+  if (!fileName) {
+    return null
+  }
+
+  const filePath = path.join(process.cwd(), 'public', 'uploads', fileName)
+  return fs.existsSync(filePath) ? `/uploads/${fileName}` : null
 }
 
 function getFallbackCoverPath(detection: any) {
-  return sanitizeLocalUploadPath(detection?.coverPath) || null
+  const coverPath = sanitizeLocalUploadPath(detection?.coverPath)
+  if (!coverPath || !coverPath.startsWith('/uploads/')) {
+    return coverPath
+  }
+
+  const fileName = coverPath.replace('/uploads/', '')
+  return buildExistingUploadUrl(fileName)
 }
 
 class CommunityService {
@@ -107,8 +132,9 @@ class CommunityService {
     return result.map((post: any) => ({
       ...post,
       confidenceLabel: normalizeConfidenceValue(post.confidence),
-      coverPath: sanitizeLocalUploadPath(post.coverPath),
-      coverImageUrl: null,
+      coverPath: getFallbackCoverPath(post),
+      coverImageUrl: getFallbackCoverPath(post),
+      sourceImageUrl: buildExistingUploadUrl(post.sourceImageFilename),
       createdAtLabel: post.createdAt
         ? new Intl.DateTimeFormat('id-ID', {
             day: '2-digit',
@@ -160,8 +186,9 @@ class CommunityService {
     const post = result[0]
     return {
       ...post,
-      coverPath: sanitizeLocalUploadPath(post.coverPath),
-      sourceImageUrl: null,
+      coverPath: getFallbackCoverPath(post),
+      coverImageUrl: getFallbackCoverPath(post),
+      sourceImageUrl: buildExistingUploadUrl(post.sourceImageFilename),
     }
   }
 
