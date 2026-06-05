@@ -36,7 +36,10 @@ export default class GardenManagersController {
         return response.unauthorized({ message: 'Invalid user.' })
       }
 
-      const plants = await Plant.find({ user_id: request['user'].id })
+      const plants = await Plant.find({
+        user_id: request['user'].id,
+        $or: [{ harvested_at: { $exists: false } }, { harvested_at: null }],
+      })
 
       const detections = await DetectionResult.find({
         user_id: request['user'].id,
@@ -80,6 +83,7 @@ export default class GardenManagersController {
         }
 
         const lastWateringLabel = formatJakartaDateTime(plant.last_watered_at) || 'Belum disiram'
+        const lastTreatedLabel = formatJakartaDateTime(plant.last_treated_at) || 'Belum dirawat'
 
         const confidenceValue = latestDetection?.confidence
           ? Math.max(
@@ -107,6 +111,7 @@ export default class GardenManagersController {
               }
             : null,
           lastWateringLabel,
+          lastTreatedLabel,
         }
       })
 
@@ -260,16 +265,33 @@ export default class GardenManagersController {
     }
   }
 
-  async growth({ view }: HttpContext) {
-    return view.render('pages/garden_manager/growth')
-  }
+  async harvest({ request, response, view }: HttpContext) {
+    try {
+      if (!request['user'] || !request['user'].id) {
+        return response.unauthorized({ message: 'Invalid user.' })
+      }
 
-  async harvest({ view }: HttpContext) {
-    return view.render('pages/garden_manager/harvest')
-  }
+      const harvestedPlants = await Plant.find({
+        user_id: request['user'].id,
+        harvested_at: { $exists: true, $ne: null },
+      }).sort({ harvested_at: -1 })
 
-  async pest({ view }: HttpContext) {
-    return view.render('pages/garden_manager/pest')
+      const harvestCards = harvestedPlants.map((plant) => ({
+        plant,
+        plantedAtLabel: formatJakartaDateTime(plant.plant_date) || '-',
+        harvestedAtLabel: formatJakartaDateTime(plant.harvested_at) || '-',
+        lastWateringLabel: formatJakartaDateTime(plant.last_watered_at) || 'Belum disiram',
+        lastTreatedLabel: formatJakartaDateTime(plant.last_treated_at) || 'Belum dirawat',
+      }))
+
+      return view.render('pages/garden_manager/harvest', {
+        harvestCards,
+        totalHarvested: harvestCards.length,
+      })
+    } catch (err) {
+      console.error('Error loading harvest history:', err)
+      return response.internalServerError({ message: 'Failed to load harvest history.' })
+    }
   }
 
   async detect({ request, response }: HttpContext) {

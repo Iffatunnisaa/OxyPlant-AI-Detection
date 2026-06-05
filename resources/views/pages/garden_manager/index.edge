@@ -124,12 +124,20 @@
             <h2 class="text-2xl font-bold text-[#0A5436] md:text-3xl">Monitor Tanaman Saya</h2>
             <p class="mt-2 text-sm text-[#4d6056]">Pantau status dan jalankan tindakan cepat untuk setiap tanaman.</p>
           </div>
-          <a href="{{ route('garden_manager.add') }}" class="inline-flex items-center gap-2 rounded-full bg-[#3FAB5E] px-5 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-[#368F4F]">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-            </svg>
-            Add Plant
-          </a>
+          <div class="flex flex-wrap gap-2">
+            <a href="{{ route('garden_manager.harvest') }}" class="inline-flex items-center gap-2 rounded-full border border-[#b7d0b7] bg-white px-5 py-2.5 text-sm font-semibold text-[#14573e] transition duration-200 hover:bg-[#eef6ec]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              Riwayat Panen
+            </a>
+            <a href="{{ route('garden_manager.add') }}" class="inline-flex items-center gap-2 rounded-full bg-[#3FAB5E] px-5 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-[#368F4F]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+              </svg>
+              Add Plant
+            </a>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -178,7 +186,7 @@
       <p class="mb-6 text-center">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
       <div class="mb-6 rounded-xl border border-[#dbe3d7] bg-[#f8faf5] px-4 py-3">
         <p id="modalMessage" class="text-sm font-semibold text-[#14573e]"></p>
-        <p class="mt-1 text-xs text-[#6a7b70]">Aksi ini hanya memperbarui data tanaman di Garden Manager.</p>
+        <p id="modalHelperText" class="mt-1 text-xs text-[#6a7b70]">Aksi ini hanya memperbarui data tanaman di Garden Manager.</p>
       </div>
       <div class="flex justify-end space-x-2">
         <button type="button" id="cancelButton" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded">
@@ -201,6 +209,7 @@
       const modalActionIcon = document.getElementById('modalActionIcon');
       const modalPlantId = document.getElementById('modalPlantId');
       const modalMessage = document.getElementById('modalMessage');
+      const modalHelperText = document.getElementById('modalHelperText');
       const modalAction = document.getElementById('modalAction');
 
       const scanModal = document.getElementById('scanModal');
@@ -495,13 +504,16 @@
         if (action === 'water') {
           iconHtml = `<i class="fas fa-tint text-5xl text-[#3FAB5E]"></i>`;
           actionMessage = `Menyiram ${plantName}`;
+          modalHelperText.textContent = 'Waktu penyiraman terakhir akan diperbarui.';
         } else if (action === 'pesticide') {
           iconHtml = `<i class="fas fa-spray-can text-5xl text-[#FFA726]"></i>`;
           actionMessage = `Memberikan pestisida pada ${plantName}`;
+          modalHelperText.textContent = 'Waktu perawatan terakhir akan diperbarui dan tampil di kartu tanaman.';
           normalizedAction = 'treat';
         } else if (action === 'harvest') {
           iconHtml = `<i class="fas fa-cut text-5xl text-[#FF7043]"></i>`;
           actionMessage = `Memanen ${plantName}`;
+          modalHelperText.textContent = 'Tanaman akan dipindahkan dari daftar aktif Garden Manager setelah dipanen.';
         }
         modalActionIcon.innerHTML = iconHtml;
         modalPlantId.value = plantId;
