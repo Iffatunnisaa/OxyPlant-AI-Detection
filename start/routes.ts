@@ -196,9 +196,7 @@ router.get('/admin', async ({ view }) => {
 router.group(() => {
   router.get('/', [GardenManagersController, 'index']).as('index')
   router.get('/add', [GardenManagersController, 'add']).as('add')
-  router.get('/growth', [GardenManagersController, 'growth']).as('growth')
   router.get('/harvest', [GardenManagersController, 'harvest']).as('harvest')
-  router.get('/pest', [GardenManagersController, 'pest']).as('pest')
 
   router.post('/add', [GardenManagersController, 'store']).as('store')
   router.post('/action', [GardenManagersController, 'action']).as('action')
