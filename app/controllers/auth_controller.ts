@@ -3,6 +3,7 @@ import User from '#models/user'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import env from "#start/env"
+import { registerValidator } from '#validators/register_validator'
 
 const ADMIN_EMAILS = ['admin@gmail.com']
 
@@ -12,23 +13,30 @@ function isAdminEmail(email: string) {
 
 export default class AuthController {
   async register({ request, response }: HttpContext) {
-    // const { email, password } = request.only(['email', 'password'])
-    const {
-      fullname,
-      username,
-      email,
-      password
-    } = request.only(['fullname', 'username', 'email', 'password'])
+    const payload = await request.validateUsing(registerValidator)
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-    const role = isAdminEmail(email) ? 'admin' : 'user'
+    const existingUser = await User.findOne({
+      email: payload.email
+    })
 
-    try {
-      await User.create({ fullname, username, email, password: hashedPassword, role })
-      return response.redirect().toRoute('auth.login')
-    } catch (err) {
-      return response.badRequest('User already exists')
+    if (existingUser) {
+      return response.badRequest('Email sudah terdaftar')
     }
+
+    const hashedPassword = await bcrypt.hash(payload.password, 10)
+
+    const role = isAdminEmail(payload.email)
+    ? 'admin'
+    : 'user'
+
+    await User.create({
+      fullname: payload.fullname,
+      username: payload.username,
+      email: payload.email,
+      password: hashedPassword,
+      role,
+    })
+    return response.redirect().toRoute('auth.login')
   }
 
   async login({ request, response }: HttpContext) {

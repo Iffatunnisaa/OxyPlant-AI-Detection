@@ -102,47 +102,91 @@ export const diseaseRules: Record<string, Record<string, any>> = {
     'late blight': {
       severity: 'critical',
       prevention: [
-        'Hindari kelembaban tinggi',
-        'Gunakan varietas tahan penyakit',
-        'Atur jarak tanam',
+        'Gunakan mulsa untuk mengurangi percikan tanah',
+        'Lakukan rotasi tanaman',
+        'Pastikan sirkulasi udara baik',
       ],
       treatment: [
-        'Gunakan fungisida sistemik sesegera mungkin',
-        'Isolasi tanaman yang terinfeksi berat',
+        'Gunakan fungisida berbahan chlorothalonil atau mancozeb', 
+        'Buang daun yang terinfeksi',
+        'Bersihkan sisa tanaman sakit',
       ],
       monitoring: [
-        'Pantau bercak gelap yang cepat menyebar',
-        'Monitor kondisi cuaca lembab',
+        'Pantau bercak coklat melingkar pada daun bawah', 
+        'Periksa perkembangan setelah kelembaban tinggi',
+        'Amati perkembangan bercak',
       ],
       references: ['Maurya et al. (2022)'],
     },
     'leaf mold': {
       severity: 'medium',
-      prevention: ['Kurangi kelembaban greenhouse', 'Tingkatkan ventilasi udara', 'Gunakan benih sehat'],
-      treatment: ['Gunakan fungisida sesuai rekomendasi', 'Pangkas daun yang terinfeksi', 'Bersihkan area tanam'],
-      monitoring: ['Pantau lapisan jamur di bawah daun', 'Periksa kelembaban udara', 'Cek penyebab jamur'],
+      prevention: [
+        'Menggunakan varietas tahan', 
+        'menjaga sirkulasi udara yang baik', 
+        'mengurangi kelembaban rumah tanam'
+      ],
+      treatment: [
+        'Gunakan fungisida sesuai rekomendasi', 
+        'Pangkas daun yang terinfeksi', 
+        'Bersihkan area tanam'
+      ],
+      monitoring: [
+        'Pantau lapisan jamur di bawah daun', 
+        'Periksa kelembaban udara', 
+        'Cek penyebab jamur'
+      ],
       references: ['Zhao et al. (2022)'],
     },
     'mosaic virus': {
       severity: 'high',
-      prevention: ['Gunakan benih sehat', 'Lakukan sanitasi alat', 'Hindari kontak tanaman sakit ke sehat'],
-      treatment: ['Cabut tanaman yang terinfeksi berat', 'Kendalikan serangga pembawa virus', 'Disinfeksi alat'],
-      monitoring: ['Pantau perubahan pola warna mosaik daun', 'Periksa penyebaran antar tanaman', 'Pantau tanaman muda secara rutin'],
-      references: ['Hanssen et al. (2020)'],
+      prevention: [
+        'Gunakan benih sehat', 
+        'Lakukan sanitasi alat pertania ', 
+        'Menghindari kontak dengan tanaman terinfeksi'
+      ],
+      treatment: [
+        'Cabut tanaman yang terinfeksi berat', 
+        'Kendalikan serangga pembawa virus', 
+        'Desinfeksi alat'],
+      monitoring: [
+        'Pantau perubahan pola warna mosaik daun', 
+        'Periksa penyebaran antar tanaman', 
+        'Pantau daun muda secara rutin'],
+      references: ['Ishibashi et al. (2023)'],
     },
     'septoria spot': {
       severity: 'medium',
-      prevention: ['Gunakan mulsa', 'Lakukan rotasi tanaman', 'Kurangi kelembaban daun'],
-      treatment: ['Gunakan fungisida preventif', 'Buang daun bagian bawah yang terinfeksi', 'Bersihkan sisa tanaman'],
-      monitoring: ['Pantau bercak kecil abu-abu pada daun bawah', 'Periksa kondisi lahan setelah hujan'],
+      prevention: [
+        'Gunakan benih sehat', 
+        'Lakukan rotasi tanaman', 
+        'Menghindari percikan air ke daun'
+      ],
+      treatment: [
+        'Gunakan fungisida preventif maupun kuratif sesuai rekomendasi', 
+        'Buang daun bagian bawah yang terinfeksi', 
+        'Bersihkan sisa tanaman'
+      ],
+      monitoring: [
+        'Pantau bercak kecil abu-abu pada daun bawah', 
+        'Periksa kondisi lahan setelah hujan'],
       references: ['Pandey et al. (2024)'],
     },
     'yellow leaf curl': {
       severity: 'critical',
-      prevention: ['Kontrol populasi whitefly (kutu kebul)', 'Bersihkan gulma di sekitar lahan', 'Gunakan varietas tahan virus'],
-      treatment: ['Cabut tanaman yang terinfeksi berat', 'Bersihkan gulma sekitar lahan', 'Gunakan perangkap atau insektisida untuk kutu kebul'],
-      monitoring: ['Pantau daun menguning dan menggulung', 'Periksa populasi whitefly', 'Monitoring rutin sejak awal tanam'],
-      references: ['Yan et al. (2021)'],
+      prevention: [
+        'Kontrol populasi whitefly (kutu kebul)', 
+        'Bersihkan gulma di sekitar lahan', 
+        'Gunakan varietas tahan virus'
+      ],
+      treatment: [
+        'Cabut tanaman yang terinfeksi berat', 
+        'Bersihkan gulma sekitar lahan', 
+        'Gunakan perangkap atau insektisida untuk kutu kebul'],
+      monitoring: [
+        'Pantau daun menguning dan menggulung', 
+        'Periksa populasi whitefly', 
+        'Monitoring rutin sejak awal tanam'],
+      references: ['Cao et al. (2024)'],
     },
   },
 
