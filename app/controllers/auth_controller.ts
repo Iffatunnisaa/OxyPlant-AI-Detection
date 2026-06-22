@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import env from "#start/env"
 import { registerValidator } from '#validators/register_validator'
+import { loginValidator } from '#validators/login_validator'
 
 const ADMIN_EMAILS = ['admin@gmail.com']
 
@@ -38,12 +39,15 @@ export default class AuthController {
     })
     return response.redirect().toRoute('auth.login')
   }
-
+  
   async login({ request, response }: HttpContext) {
-    const { email, password } = request.only(['email', 'password'])
-    const user = await User.findOne({ email })
+    const payload = await request.validateUsing(loginValidator)
+    
+    const user = await User.findOne({
+      email: payload.email
+    })
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user || !(await bcrypt.compare(payload.password, user.password))) {
       return response.redirect().toRoute('auth.login')
     }
 
@@ -57,7 +61,7 @@ export default class AuthController {
       env.get('JWT_SECRET'),
       { expiresIn: '1h' }
     )
-
+    
     response.cookie('token', token, {
       httpOnly: true,
       path: '/',
@@ -67,7 +71,7 @@ export default class AuthController {
     if (user.role === 'admin') {
       return response.redirect().toRoute('admin.dashboard')
     }
-
+    
     return response.redirect().toRoute('garden_manager.index')
   }
 
